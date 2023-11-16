@@ -1,4 +1,4 @@
-# anything
+# Team LostHub
 
 Adnan Mohamud, Ekaterina Khoroshilova, David Danilchik, Chester Lee Coloma
 
