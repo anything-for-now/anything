@@ -14,7 +14,7 @@ Summary of Idea:
 
 ## Wireframe
 
-![Wireframe]()
+![Wireframe](./assets/wireframe.png)
 
 ## Domain Modeling
 
@@ -22,4 +22,4 @@ Summary of Idea:
 
 ## Database Schema Diagram
 
-![Database Schema Diagram]()
+![Database Schema Diagram](./assets/database-schema.png)
