@@ -18,7 +18,7 @@ Summary of Idea:
 
 ## Domain Modeling
 
-![Domain Modeling]()
+![Domain Modeling](./assets/domain-modeling.png)
 
 ## Database Schema Diagram
 
