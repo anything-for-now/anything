@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Nav, Navbar, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import AuthButtons from '../Auth/AuthButtons'
 
 const Header = () => {
-  // State to toggle between login and logout
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const handleLoginLogout = () => {
-    setIsLoggedIn(!isLoggedIn);
-  };
+  
 
   return (
     <>
@@ -28,8 +24,7 @@ const Header = () => {
               </Link>
             </Nav>
           </Navbar.Collapse>
-          <Button variant='primary'>Signup</Button>
-          <Button variant='primary'>Login</Button>
+          <AuthButtons />
         </Container>
       </Navbar>
     </>

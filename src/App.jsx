@@ -7,6 +7,7 @@ import Lost from './components/Lost.jsx';
 import Found from './components/Found.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import GoogleMaps from './components/GoogleMaps.jsx'; 
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <div id='root'>
         <Router>
           <Header />
+    <GoogleMaps />
           <Routes>
             <Route exact path='/' element={<HomeCarousel />}></Route>
           </Routes>
