@@ -5,6 +5,7 @@ function Lost() {
   const [showModal, setShowModal] = useState(false);
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -30,6 +31,11 @@ function Lost() {
     setTags(newTags);
   };
 
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+
   return (
     <>
       <Button onClick={handleShowModal}>+ Lost Item</Button>
@@ -43,12 +49,19 @@ function Lost() {
             <Form.Label>Item Name</Form.Label>
             <Form.Control type='text' placeholder='// Wallet' />
           </Form.Group>
+          <Form.Group controlId='formFile' className='mb-3'>
+            <Form.Label>Image</Form.Label>
+            <Form.Control type='file' onChange={handleFileChange} />
+          </Form.Group>
           <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
             <Form.Label>Location</Form.Label>
-            <Form.Control type='text' placeholder='// 123 Street, Seattle, WA 98101' />
-          </Form.Group>
+            <Form.Control
+              type='text'
+              placeholder='// 123 Street, Seattle, WA 98101'
+            />
+          </Form.Group> 
           <Form.Group controlId='tags'>
-            <Form.Label>Tags/Keywords</Form.Label>
+            <Form.Label>Keywords</Form.Label>
             <div>
               {tags.map((tag, index) => (
                 <Badge key={index} className='mr-2' variant='primary'>
