@@ -36,7 +36,7 @@ Stretch goals for this project may include:
 1. Profile picture - Ability to upload a user profile picture
 2. Payment - Searcher pays for additional search items
 3. Mobile App version - create a mobile application for more user reach
-   
+ 
 ## Functional Requirements
 
 Functional requirements include tasks such as:
@@ -50,13 +50,10 @@ Functional requirements include tasks such as:
 
 ## Data Flow
 
-1. User registers and logs in (AWS account).
-2. User sends a message.
-3. The message is received by AI for toxicity check.
-4. The message is stored in the database.
-5. The message is delivered in real-time to the recipient.
-6. Messages are logged for reference and history.
-7. If flagged by AI, administrators are notified in the private chatroom.
+1. User Registration and Login: Users register and log in with enhanced security measures, including optional two-factor authentication for added protection.
+2. Item Listing and Searching: Users list their found items or search for lost items through an intuitive and user-friendly interface.
+3. Matching and New Page Access: When a match is found between lost and found items, users gain access to a new page to view the match details.
+4. Secure User Communication: Users can securely communicate with each other to arrange the retrieval of the lost item, with privacy safeguards in place.
 
 ## Non-Functional Requirements
 
