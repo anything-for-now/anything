@@ -1,3 +1,18 @@
-.item-card-container {
+#item-card-container {
   display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+#item-card-image {
+  padding-left: 0;
+}
+
+.item-card-description {
+  text-align: start;
+  margin-left: 2rem;
 }
