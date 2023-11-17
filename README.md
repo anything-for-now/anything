@@ -1,9 +1,25 @@
-# anything
+# Team LostHub
 
 Adnan Mohamud, Ekaterina Khoroshilova, David Danilchik, Chester Lee Coloma
 
-## Mood AI with Spotify
+## LostHub
 
 Summary of Idea:
 
-- The Mood AI with Spotify Integration app enhances users' emotional well-being by analyzing their moods and generating personalized playlists through the Spotify API. Users can input their mood, and the app curates music playlists tailored to their emotional state. This idea combines mood analysis with music curation, offering a unique and engaging way for users to manage their emotions.
+- The Lost & Found app streamlines reporting and finding lost items, offering a user-friendly platform to report and retrieve belongings efficiently. It addresses the inconvenience of traditional lost and found systems by providing a centralized digital solution.
+
+## Project Management Board
+
+[Trello](https://trello.com/b/K503Pxff/losthub)
+
+## Wireframe
+
+![Wireframe](./assets/wireframe.png)
+
+## Domain Modeling
+
+![Domain Modeling](./assets/domain-modeling.png)
+
+## Database Schema Diagram
+
+![Database Schema Diagram](./assets/database-schema.png)
