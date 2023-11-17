@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form, Badge } from 'react-bootstrap';
-import ItemCard from './ItemCard';
 
-function Lost() {
+function Found() {
   const [showModal, setShowModal] = useState(false);
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState('');
@@ -36,15 +35,13 @@ function Lost() {
     setSelectedFile(e.target.files[0]);
   };
 
-
   return (
     <>
-      <ItemCard />
-      <Button onClick={handleShowModal}>+ Lost Item</Button>
+      <Button onClick={handleShowModal}>+ Found Item</Button>
 
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Lost Item Form</Modal.Title>
+          <Modal.Title>Found Item Form</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
@@ -61,7 +58,7 @@ function Lost() {
               type='text'
               placeholder='// 123 Street, Seattle, WA 98101'
             />
-          </Form.Group> 
+          </Form.Group>
           <Form.Group controlId='tags'>
             <Form.Label>Keywords</Form.Label>
             <div>
@@ -86,7 +83,7 @@ function Lost() {
               onChange={(e) => setTagInput(e.target.value)}
             />
             <Form.Text className='text-muted'>
-              Add keywords or tags related to the lost item.
+              Add keywords or tags related to the found item.
             </Form.Text>
             <Button variant='primary' onClick={handleAddTag}>
               Add Tag
@@ -112,4 +109,4 @@ function Lost() {
   );
 }
 
-export default Lost;
+export default Found;
