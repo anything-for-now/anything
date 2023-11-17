@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
-import HomeCarousel from './components/HomeCarousel.jsx';
 import Lost from './components/Lost.jsx';
 import Found from './components/Found.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,9 +14,9 @@ function App() {
       <div id='root'>
         <Router>
           <Header />
-    <GoogleMaps />
+
           <Routes>
-            <Route exact path='/' element={<HomeCarousel />}></Route>
+            <Route exact path='/' element={<GoogleMaps />}></Route>
           </Routes>
           <Routes>
             <Route exact path='/lost' element={<Lost />}></Route>
