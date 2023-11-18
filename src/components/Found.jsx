@@ -35,6 +35,34 @@ function Found() {
     setSelectedFile(e.target.files[0]);
   };
 
+  const handleSaveChanges = async () => {
+    if (!selectedFile) {
+      alert('Please select a file to upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try {
+      const response = await fetch('http://localhost:3001/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      // The backend responds with the public URL of the uploaded image
+      const data = await response.json();
+      console.log('File uploaded successfully, public URL:', data.imageUrl);
+      handleCloseModal(); 
+    } catch (error) {
+      console.error('Upload error:', error);
+    }
+  };
+
   return (
     <>
       <Button onClick={handleShowModal}>+ Found Item</Button>
@@ -96,13 +124,11 @@ function Found() {
           </Button>
           {/* Add your form submission logic here */}
           <Button
-            variant='primary'
-            // onClick={() => {
-            //   /* Add your form submission logic here */
-            // }}
-          >
-            Save Changes
-          </Button>
+        variant='primary'
+        onClick={handleSaveChanges} 
+      >
+        Save Changes
+      </Button>
         </Modal.Footer>
       </Modal>
     </>

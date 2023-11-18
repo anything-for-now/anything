@@ -14,7 +14,6 @@ function App() {
       <div id='root'>
         <Router>
           <Header />
-
           <Routes>
             <Route exact path='/' element={<GoogleMaps />}></Route>
           </Routes>
