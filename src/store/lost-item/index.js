@@ -35,9 +35,13 @@ const lostItemSlice = createSlice({
       state.selectedFile = action.payload;
     },
     formInputChange: (state, action) => {
-      // Implement form input change logic here
       const { field, value } = action.payload;
-      state.formData[field] = value;
+      // Update the state based on the field
+      if (field === 'itemName') {
+        state.formData.itemName = value;
+      } else if (field === 'tagInput') {
+        state.tagInput = value;
+      }
     },
   },
 });

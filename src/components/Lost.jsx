@@ -9,7 +9,6 @@ import FormModal from './FormModal';
 
 function Lost() {
   const stateShowModal = useSelector((state) => state.lostItem.showModal);
-  console.log("HERES SHOW MODAL", stateShowModal)
   const dispatch = useDispatch();
 
   const handleShowModal = () => {

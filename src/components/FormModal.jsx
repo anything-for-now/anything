@@ -22,7 +22,7 @@ function FormModal() {
   const handleAddTag = () => {
     if (tagInput.trim() !== '') {
       dispatch(addTag(tagInput.trim()));
-      setTagInput('');
+      dispatch(formInputChange({ field: 'tagInput', value: '' })); // Clear tagInput field
     }
   };
 
@@ -35,7 +35,8 @@ function FormModal() {
   };
 
   const handleFormInputChange = (e, field) => {
-    dispatch(formInputChange(field, e.target.value));
+    const value = e.target.value;
+    dispatch(formInputChange({ field, value }));
   };
 
   return (
@@ -85,7 +86,7 @@ function FormModal() {
             type='text'
             placeholder='// black leather credit card cash license'
             value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
+            onChange={(e) => handleFormInputChange(e, 'tagInput')}
           />
           <Form.Text className='text-muted'>
             Add keywords or tags related to the lost item.
@@ -102,7 +103,6 @@ function FormModal() {
         <Button
           variant='primary'
           onClick={() => {
-            // Dispatch an action to handle the form submission logic using formData
             console.log('Form Data:', formData);
           }}
         >
