@@ -4,22 +4,20 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import ItemCard from './ItemCard';
-import {
-  showModal as showLostItemModal,
-  hideModal as hideLostItemModal,
-} from '../store/lost-item';
+import { showModal, hideModal } from '../store/lost-item';
 import FormModal from './FormModal';
 
 function Lost() {
-  const showModal = useSelector((state) => state.lostItem.showModal);
+  const stateShowModal = useSelector((state) => state.lostItem.showModal);
+  console.log("HERES SHOW MODAL", stateShowModal)
   const dispatch = useDispatch();
 
   const handleShowModal = () => {
-    dispatch(showLostItemModal());
+    dispatch(showModal());
   };
 
   const handleHideModal = () => {
-    dispatch(hideLostItemModal());
+    dispatch(hideModal());
   };
 
   return (
@@ -27,7 +25,7 @@ function Lost() {
       <ItemCard />
       <Button onClick={handleShowModal}>+ Lost Item</Button>
 
-      <FormModal showModal={showModal} handleCloseModal={handleCloseModal} />
+      <FormModal showModal={stateShowModal} handleCloseModal={handleHideModal} />
     </>
   );
 }

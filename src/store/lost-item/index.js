@@ -42,13 +42,6 @@ const lostItemSlice = createSlice({
   },
 });
 
-// Create the Redux store with the combined reducer
-const store = configureStore({
-  reducer: {
-    lostItem: lostItemSlice.reducer,
-  },
-});
-
 // Export actions for easy use in components
 export const {
   showModal,
