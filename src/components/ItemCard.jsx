@@ -13,6 +13,9 @@ function ItemCard() {
           <p>Location: 123 Street, Seattle WA 98101</p>
           <p>Keywords: black leather credit card cash license</p>
         </div>
+        <div>
+          <h3>Possible Match Found</h3>
+        </div>
       </Container>
     </>
   );
