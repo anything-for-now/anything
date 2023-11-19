@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 import './App.css';
 import { Provider } from 'react-redux';
@@ -17,15 +19,10 @@ function App() {
         <div id='root'>
           <Router>
             <Header />
-
             <Routes>
-              <Route exact path='/' element={<GoogleMaps />}></Route>
-            </Routes>
-            <Routes>
-              <Route exact path='/lost' element={<Lost />}></Route>
-            </Routes>
-            <Routes>
-              <Route exact path='/found' element={<Found />}></Route>
+              <Route exact path='/' element={<GoogleMaps />} />
+              <Route exact path='/lost' element={<Lost />} />
+              <Route exact path='/found' element={<Found />} />
             </Routes>
             <Footer />
           </Router>
