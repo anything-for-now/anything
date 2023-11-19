@@ -1,34 +1,20 @@
 'use strict';
 
 import React from 'react';
-import { Modal, Form, Badge, Button } from 'react-bootstrap';
+import { Modal, Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   hideModal,
-  addTag,
-  removeTag,
   fileChange,
   formInputChange,
-} from '../store/lost-item';
+  saveFormData,
+} from '../store/item';
 
-function FormModal() {
-  const showModal = useSelector((state) => state.lostItem.showModal);
-  const tags = useSelector((state) => state.lostItem.tags);
-  const tagInput = useSelector((state) => state.lostItem.tagInput);
-  const formData = useSelector((state) => state.lostItem.formData);
-
+function FormModal({ formType }) {
+  const showModal = useSelector((state) => state.item.showModal);
+  const formData = useSelector((state) => state.item.formData);
+  const itemsState = useSelector((state) => state.item.items);
   const dispatch = useDispatch();
-
-  const handleAddTag = () => {
-    if (tagInput.trim() !== '') {
-      dispatch(addTag(tagInput.trim()));
-      dispatch(formInputChange({ field: 'tagInput', value: '' })); // Clear tagInput field
-    }
-  };
-
-  const handleRemoveTag = (index) => {
-    dispatch(removeTag(index));
-  };
 
   const handleFileChange = (e) => {
     dispatch(fileChange(e.target.files[0]));
@@ -39,10 +25,17 @@ function FormModal() {
     dispatch(formInputChange({ field, value }));
   };
 
+  const handleSaveChanges = () => {
+    const itemType = formType.toLowerCase();
+    dispatch(formInputChange({ field: 'type', value: itemType }));
+    dispatch(saveFormData());
+    dispatch(hideModal());
+  };
+
   return (
     <Modal show={showModal} onHide={() => dispatch(hideModal())}>
       <Modal.Header closeButton>
-        <Modal.Title>Lost Item Form</Modal.Title>
+        <Modal.Title>{formType} Item Form</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
@@ -62,50 +55,27 @@ function FormModal() {
           <Form.Label>Location</Form.Label>
           <Form.Control
             type='text'
+            value={formData.location}
             placeholder='// 123 Street, Seattle, WA 98101'
+            onChange={(e) => handleFormInputChange(e, 'location')}
           />
         </Form.Group>
-        <Form.Group controlId='tags'>
-          <Form.Label>Keywords</Form.Label>
-          <div>
-            {tags.map((tag, index) => (
-              <Badge key={index} className='mr-2' variant='primary'>
-                {tag}
-                <Button
-                  variant='secondary'
-                  size='sm'
-                  className='ml-2'
-                  onClick={() => handleRemoveTag(index)}
-                >
-                  X
-                </Button>
-              </Badge>
-            ))}
-          </div>
+        <Form.Group controlId='description'>
+          <Form.Label>Description</Form.Label>
           <Form.Control
-            type='text'
-            placeholder='// black leather credit card cash license'
-            value={tagInput}
-            onChange={(e) => handleFormInputChange(e, 'tagInput')}
+            as='textarea'
+            rows={3}
+            placeholder='Provide a detailed description of the item...'
+            value={formData.description}
+            onChange={(e) => handleFormInputChange(e, 'description')}
           />
-          <Form.Text className='text-muted'>
-            Add keywords or tags related to the lost item.
-          </Form.Text>
-          <Button variant='primary' onClick={handleAddTag}>
-            Add Tag
-          </Button>
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button variant='secondary' onClick={() => dispatch(hideModal())}>
           Close
         </Button>
-        <Button
-          variant='primary'
-          onClick={() => {
-            console.log('Form Data:', formData);
-          }}
-        >
+        <Button variant='primary' onClick={handleSaveChanges}>
           Save Changes
         </Button>
       </Modal.Footer>

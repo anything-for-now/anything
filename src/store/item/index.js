@@ -1,18 +1,18 @@
 'use strict';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-const lostItemSlice = createSlice({
-  name: 'lostItem',
+const itemSlice = createSlice({
+  name: 'item',
   initialState: {
     showModal: false,
-    tags: [],
-    tagInput: '',
     selectedFile: null,
+    items: [],
     formData: {
+      type: '',
       itemName: '',
       image: null,
       location: '',
-      keywords: [],
+      description: '',
     },
   },
   reducers: {
@@ -22,38 +22,42 @@ const lostItemSlice = createSlice({
     hideModal: (state) => {
       state.showModal = false;
     },
-    addTag: (state, action) => {
-      // Implement tag addition logic here
-      state.tags.push(action.payload);
-    },
-    removeTag: (state, action) => {
-      // Implement tag removal logic here
-      state.tags.splice(action.payload, 1);
-    },
     fileChange: (state, action) => {
-      // Implement file change logic here
       state.selectedFile = action.payload;
     },
     formInputChange: (state, action) => {
       const { field, value } = action.payload;
-      // Update the state based on the field
       if (field === 'itemName') {
         state.formData.itemName = value;
-      } else if (field === 'tagInput') {
-        state.tagInput = value;
+      } else if (field === 'description') {
+        state.formData.description = value;
+      } else if (field === 'location') {
+        state.formData.location = value;
+      } else if (field === 'image') {
+        state.formData.image = value;
+      } else if (field === 'type') {
+        state.formData.type = value;
       }
+    },
+    saveFormData: (state) => {
+      state.items.push(state.formData);
+      state.formData = {
+        type: '',
+        itemName: '',
+        image: null,
+        location: '',
+        description: '',
+      };
     },
   },
 });
 
-// Export actions for easy use in components
 export const {
   showModal,
   hideModal,
-  addTag,
-  removeTag,
   fileChange,
   formInputChange,
-} = lostItemSlice.actions;
+  saveFormData,
+} = itemSlice.actions;
 
-export default lostItemSlice.reducer;
+export default itemSlice.reducer;

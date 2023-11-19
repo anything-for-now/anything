@@ -1,15 +1,21 @@
 'use strict';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import ItemCard from './ItemCard';
-import { showModal, hideModal } from '../store/lost-item';
+import { showModal, hideModal } from '../store/item';
 import FormModal from './FormModal';
 
 function Lost() {
-  const stateShowModal = useSelector((state) => state.lostItem.showModal);
+  const stateShowModal = useSelector((state) => state.item.showModal);
+  const itemsState = useSelector((state) => state.item.items);
   const dispatch = useDispatch();
+  const [forceUpdate, setForceUpdate] = useState(false);
+
+  useEffect(() => {
+    setForceUpdate((prev) => !prev);
+  }, [itemsState]);
 
   const handleShowModal = () => {
     dispatch(showModal());
@@ -21,10 +27,26 @@ function Lost() {
 
   return (
     <>
-      <ItemCard />
+      {itemsState
+        ? itemsState
+            .filter((item) => item.type === 'lost')
+            .map((item, index) => (
+              <ItemCard
+                key={index}
+                itemName={item.itemName}
+                image={item.image}
+                location={item.location}
+                description={item.description}
+              />
+            ))
+        : null}
       <Button onClick={handleShowModal}>+ Lost Item</Button>
 
-      <FormModal showModal={stateShowModal} handleCloseModal={handleHideModal} />
+      <FormModal
+        formType={'Lost'}
+        showModal={stateShowModal}
+        handleCloseModal={handleHideModal}
+      />
     </>
   );
 }
