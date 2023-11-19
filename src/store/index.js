@@ -2,10 +2,10 @@
 
 import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
-import lostItemReducer from './lost-item';
+import itemReducer from './item';
 
 const reducer = combineReducers({
-  lostItem: lostItemReducer,
+  item: itemReducer,
 });
 
 const store = configureStore({

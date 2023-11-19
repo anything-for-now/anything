@@ -3,12 +3,16 @@
 import React from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideModal, fileChange, formInputChange, saveFormData } from '../store/lost-item';
+import {
+  hideModal,
+  fileChange,
+  formInputChange,
+  saveFormData,
+} from '../store/item';
 
-function FormModal({ formName }) {
-  const showModal = useSelector((state) => state.lostItem.showModal);
-  const formData = useSelector((state) => state.lostItem.formData);
-  const lostItemsState = useSelector((state) => state.lostItem.lostItems);
+function FormModal({ formType }) {
+  const showModal = useSelector((state) => state.item.showModal);
+  const formData = useSelector((state) => state.item.formData);
   const dispatch = useDispatch();
 
   const handleFileChange = (e) => {
@@ -21,17 +25,16 @@ function FormModal({ formName }) {
   };
 
   const handleSaveChanges = () => {
-    dispatch(saveFormData()); // Dispatch the new action to save formData to lostItem
-    
-    dispatch(hideModal()); // Optionally, hide the modal after saving
+    const itemType = formType.toLowerCase();
+    dispatch(formInputChange({ field: 'type', value: itemType }));
+    dispatch(saveFormData());
+    dispatch(hideModal());
   };
-
-  console.log('HERES THE NEW LOST ITEM STATE ', lostItemsState);
 
   return (
     <Modal show={showModal} onHide={() => dispatch(hideModal())}>
       <Modal.Header closeButton>
-        <Modal.Title>{formName} Item Form</Modal.Title>
+        <Modal.Title>{formType} Item Form</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
@@ -61,7 +64,7 @@ function FormModal({ formName }) {
           <Form.Control
             as='textarea'
             rows={3}
-            placeholder='Provide a detailed description of the lost item...'
+            placeholder='Provide a detailed description of the item...'
             value={formData.description}
             onChange={(e) => handleFormInputChange(e, 'description')}
           />

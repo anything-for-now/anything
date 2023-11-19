@@ -1,13 +1,14 @@
 'use strict';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-const lostItemSlice = createSlice({
-  name: 'lostItem',
+const itemSlice = createSlice({
+  name: 'item',
   initialState: {
     showModal: false,
     selectedFile: null,
-    lostItems: [],
+    items: [],
     formData: {
+      type: '',
       itemName: '',
       image: null,
       location: '',
@@ -22,7 +23,6 @@ const lostItemSlice = createSlice({
       state.showModal = false;
     },
     fileChange: (state, action) => {
-      // Implement file change logic here
       state.selectedFile = action.payload;
     },
     formInputChange: (state, action) => {
@@ -30,18 +30,17 @@ const lostItemSlice = createSlice({
       if (field === 'itemName') {
         state.formData.itemName = value;
       } else if (field === 'description') {
-        // Replace 'tagInput' with 'description'
         state.formData.description = value;
       } else if (field === 'location') {
-        // Replace 'tagInput' with 'description'
         state.formData.location = value;
+      } else if (field === 'image') {
+        state.formData.iamge = value;
       }
     },
     saveFormData: (state) => {
-      // Assuming lostItems is an array, you can push the current formData to it
-      state.lostItems.push(state.formData);
-      // Optionally, you can reset formData to clear the form
+      state.items.push(state.formData);
       state.formData = {
+        type: '',
         itemName: '',
         image: null,
         location: '',
@@ -51,13 +50,12 @@ const lostItemSlice = createSlice({
   },
 });
 
-// Export actions for easy use in components
 export const {
   showModal,
   hideModal,
   fileChange,
   formInputChange,
   saveFormData,
-} = lostItemSlice.actions;
+} = itemSlice.actions;
 
-export default lostItemSlice.reducer;
+export default itemSlice.reducer;
