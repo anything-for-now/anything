@@ -5,7 +5,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { hideModal, fileChange, formInputChange, saveFormData } from '../store/lost-item';
 
-function FormModal() {
+function FormModal({ formName }) {
   const showModal = useSelector((state) => state.lostItem.showModal);
   const formData = useSelector((state) => state.lostItem.formData);
   const lostItemsState = useSelector((state) => state.lostItem.lostItems);
@@ -31,7 +31,7 @@ function FormModal() {
   return (
     <Modal show={showModal} onHide={() => dispatch(hideModal())}>
       <Modal.Header closeButton>
-        <Modal.Title>Lost Item Form</Modal.Title>
+        <Modal.Title>{formName} Item Form</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>

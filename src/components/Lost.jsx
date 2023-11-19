@@ -9,6 +9,7 @@ import FormModal from './FormModal';
 
 function Lost() {
   const stateShowModal = useSelector((state) => state.lostItem.showModal);
+  const lostItemsState = useSelector((state) => state.lostItem.lostItems);
   const dispatch = useDispatch();
 
   const handleShowModal = () => {
@@ -21,10 +22,22 @@ function Lost() {
 
   return (
     <>
-      <ItemCard />
+      {lostItemsState.map((item, index) => (
+        <ItemCard
+          key={index}
+          itemName={item.itemName}
+          image={item.image}
+          location={item.location}
+          description={item.description}
+        />
+      ))}
       <Button onClick={handleShowModal}>+ Lost Item</Button>
 
-      <FormModal showModal={stateShowModal} handleCloseModal={handleHideModal} />
+      <FormModal
+        formName={'Lost'}
+        showModal={stateShowModal}
+        handleCloseModal={handleHideModal}
+      />
     </>
   );
 }
