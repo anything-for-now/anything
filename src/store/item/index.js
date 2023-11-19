@@ -34,7 +34,9 @@ const itemSlice = createSlice({
       } else if (field === 'location') {
         state.formData.location = value;
       } else if (field === 'image') {
-        state.formData.iamge = value;
+        state.formData.image = value;
+      } else if (field === 'type') {
+        state.formData.type = value;
       }
     },
     saveFormData: (state) => {

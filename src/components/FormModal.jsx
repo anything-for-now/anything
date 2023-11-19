@@ -13,6 +13,7 @@ import {
 function FormModal({ formType }) {
   const showModal = useSelector((state) => state.item.showModal);
   const formData = useSelector((state) => state.item.formData);
+  const itemsState = useSelector((state) => state.item.items);
   const dispatch = useDispatch();
 
   const handleFileChange = (e) => {
