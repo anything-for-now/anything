@@ -5,14 +5,13 @@ const lostItemSlice = createSlice({
   name: 'lostItem',
   initialState: {
     showModal: false,
-    tags: [],
-    tagInput: '',
     selectedFile: null,
+    lostItems: [],
     formData: {
       itemName: '',
       image: null,
       location: '',
-      keywords: [],
+      description: '',
     },
   },
   reducers: {
@@ -22,26 +21,32 @@ const lostItemSlice = createSlice({
     hideModal: (state) => {
       state.showModal = false;
     },
-    addTag: (state, action) => {
-      // Implement tag addition logic here
-      state.tags.push(action.payload);
-    },
-    removeTag: (state, action) => {
-      // Implement tag removal logic here
-      state.tags.splice(action.payload, 1);
-    },
     fileChange: (state, action) => {
       // Implement file change logic here
       state.selectedFile = action.payload;
     },
     formInputChange: (state, action) => {
       const { field, value } = action.payload;
-      // Update the state based on the field
       if (field === 'itemName') {
         state.formData.itemName = value;
-      } else if (field === 'tagInput') {
-        state.tagInput = value;
+      } else if (field === 'description') {
+        // Replace 'tagInput' with 'description'
+        state.formData.description = value;
+      } else if (field === 'location') {
+        // Replace 'tagInput' with 'description'
+        state.formData.location = value;
       }
+    },
+    saveFormData: (state) => {
+      // Assuming lostItems is an array, you can push the current formData to it
+      state.lostItems.push(state.formData);
+      // Optionally, you can reset formData to clear the form
+      state.formData = {
+        itemName: '',
+        image: null,
+        location: '',
+        description: '',
+      };
     },
   },
 });
@@ -50,10 +55,9 @@ const lostItemSlice = createSlice({
 export const {
   showModal,
   hideModal,
-  addTag,
-  removeTag,
   fileChange,
   formInputChange,
+  saveFormData,
 } = lostItemSlice.actions;
 
 export default lostItemSlice.reducer;
