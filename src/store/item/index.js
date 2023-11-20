@@ -50,6 +50,7 @@ export const addItem = createAsyncThunk('item/addItem', async (_, { dispatch, ge
     // Posts the new item data to the server
     const response = await axios.post(`${SERVER_URL}/items`, newItemData);
     console.log('Item added successfully:', response.data);
+    dispatch(fetchData());
   } catch (error) {
     console.error('Error adding item:', error);
   }
