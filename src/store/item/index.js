@@ -53,14 +53,30 @@ const itemSlice = createSlice({
       }
     },
     addItem: (state) => {
-      state.items.push(state.formData);
-      state.formData = {
-        type: '',
-        itemName: '',
-        image: null,
-        location: '',
-        description: '',
-      };
+      // Send a POST request to the server
+      console.log("HERES THE ITEM ", state)
+      axios
+        .post(`${SERVER_URL}/items`, state.formData)
+        .then((response) => {
+          // Handle the successful response
+          console.log('Item added successfully:', response.data);
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error('Error adding item:', error);
+        })
+        .finally(() => {
+          // Reset the form data and any loading states
+          state.formData = {
+            type: '',
+            itemName: '',
+            image: null,
+            location: '',
+            description: '',
+          };
+          state.loading = false;
+          state.error = null;
+        });
     },
   },
   extraReducers: (builder) => {
@@ -77,12 +93,7 @@ const itemSlice = createSlice({
   },
 });
 
-export const {
-  showModal,
-  hideModal,
-  fileChange,
-  formInputChange,
-  addItem,
-} = itemSlice.actions;
+export const { showModal, hideModal, fileChange, formInputChange, addItem } =
+  itemSlice.actions;
 
 export default itemSlice.reducer;
