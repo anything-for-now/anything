@@ -14,6 +14,48 @@ export const fetchData = createAsyncThunk('item/fetchData', async () => {
   }
 });
 
+// Thunk for uploading an image
+export const uploadFile = createAsyncThunk('item/uploadFile', async (file, { getState }) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  try {
+    const response = await axios.post(`${SERVER_URL}/upload`, formData);
+    if (response.status === 200) {
+      return response.data.imageUrl;
+    } else {
+      throw new Error('Failed to upload file');
+    }
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    throw error;
+  }
+});
+
+// Thunk for adding an item, with or without an image upload
+export const addItem = createAsyncThunk('item/addItem', async (_, { dispatch, getState }) => {
+  const state = getState().item;
+
+  try {
+    let imageUrl = state.formData.image; // Use existing image URL or placeholder
+
+    if (state.selectedFile) {
+      imageUrl = await dispatch(uploadFile(state.selectedFile)).unwrap();
+    }
+
+    const newItemData = {
+      ...state.formData,
+      image: imageUrl, 
+    };
+
+    // Posts the new item data to the server
+    const response = await axios.post(`${SERVER_URL}/items`, newItemData);
+    console.log('Item added successfully:', response.data);
+  } catch (error) {
+    console.error('Error adding item:', error);
+  }
+});
+
+
 const itemSlice = createSlice({
   name: 'item',
   initialState: {
@@ -23,7 +65,7 @@ const itemSlice = createSlice({
     formData: {
       type: '',
       itemName: '',
-      image: null,
+      image: 'https://placehold.co/200x200' ,
       location: '',
       description: '',
     },
@@ -52,22 +94,6 @@ const itemSlice = createSlice({
         state.formData.type = value;
       }
     },
-    addItem: (state) => {
-      // Send a POST request to the server
-      console.log('HERES THE ITEM ', state);
-      state.items.push(state.formData);
-      axios
-        .post(`${SERVER_URL}/items`, state.formData)
-        .then((response) => {
-          // Handle the successful response
-          console.log('Item added successfully:', response.data);
-        })
-        .catch((error) => {
-          // Handle errors
-          console.error('Error adding item:', error);
-        });
-
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -83,7 +109,7 @@ const itemSlice = createSlice({
   },
 });
 
-export const { showModal, hideModal, fileChange, formInputChange, addItem } =
+export const { showModal, hideModal, fileChange, formInputChange} =
   itemSlice.actions;
 
 export default itemSlice.reducer;

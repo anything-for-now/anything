@@ -9,7 +9,11 @@
 }
 
 #item-card-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
   padding-left: 0;
+  object-position: center;
 }
 
 .item-card-description {

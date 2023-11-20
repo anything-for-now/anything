@@ -7,7 +7,7 @@ function ItemCard({ itemName, description, location, image }) {
   return (
     <>
       <Container id='item-card-container'>
-        <Image id='item-card-image' src='https://placehold.co/300x200' />
+        <Image id='item-card-image' src={image} />
         <div className='item-card-body'>
           <div className='item-card-description'>
             <h2>{itemName}</h2>
