@@ -1,5 +1,18 @@
 'use strict';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+const SERVER_URL = import.meta.env.SERVER_URL || 'http://localhost:3001';
+
+export const fetchData = createAsyncThunk('item/fetchData', async () => {
+  try {
+    const response = await axios.get(`${SERVER_URL}/items`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+});
 
 const itemSlice = createSlice({
   name: 'item',
@@ -39,7 +52,7 @@ const itemSlice = createSlice({
         state.formData.type = value;
       }
     },
-    saveFormData: (state) => {
+    addItem: (state) => {
       state.items.push(state.formData);
       state.formData = {
         type: '',
@@ -50,6 +63,18 @@ const itemSlice = createSlice({
       };
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchData.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
+      .addCase(fetchData.pending, (state) => {
+        // Handle pending state if needed
+      })
+      .addCase(fetchData.rejected, (state) => {
+        // Handle rejected state if needed
+      });
+  },
 });
 
 export const {
@@ -57,7 +82,7 @@ export const {
   hideModal,
   fileChange,
   formInputChange,
-  saveFormData,
+  addItem,
 } = itemSlice.actions;
 
 export default itemSlice.reducer;

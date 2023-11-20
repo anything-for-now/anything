@@ -7,7 +7,7 @@ import {
   hideModal,
   fileChange,
   formInputChange,
-  saveFormData,
+  addItem,
 } from '../store/item';
 
 function FormModal({ formType }) {
@@ -28,7 +28,7 @@ function FormModal({ formType }) {
   const handleSaveChanges = () => {
     const itemType = formType.toLowerCase();
     dispatch(formInputChange({ field: 'type', value: itemType }));
-    dispatch(saveFormData());
+    dispatch(addItem());
     dispatch(hideModal());
   };
 
