@@ -79,7 +79,8 @@ const Map = ({ handleAddLocation, handleClose, userCoordinates }) => {
   };
 
   return (
-   <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+
+    <>
       <div id='google-map'>
         <GoogleMap
           id='map-container'
@@ -94,7 +95,8 @@ const Map = ({ handleAddLocation, handleClose, userCoordinates }) => {
       <Button id='location-button' variant='primary' onClick={handleAddMarker}>
         Add Location
       </Button>
-    </LoadScript>
+      </>
+
   );
 };
 

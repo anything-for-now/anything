@@ -37,6 +37,7 @@ function Found() {
             .map((item, index) => (
               <ItemCard
                 key={index}
+                id={item._id}
                 itemName={item.itemName}
                 image={item.image}
                 location={item.location}
