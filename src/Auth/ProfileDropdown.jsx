@@ -29,14 +29,13 @@ const ProfileDropdown = () => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu align="end">
-        <div className="dropdown-item" style={{ textAlign: 'center' }}>
+        <div className="dropdown-item" style={{ textAlign: 'left' }}>
           <img 
             src={user.picture} 
             alt="Profile" 
             style={{ width: '60px', height: '60px', borderRadius: '50%', marginBottom: '10px' }} 
           />
-          <div>Hello, {user.name}</div>
-          <div>Username: {user.nickname}</div>
+          <div>Hello, {user.nickname}</div>
           <div>Email: {user.email}</div>
         </div>
         <Dropdown.Divider />

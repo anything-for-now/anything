@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function UserProfile() {
+  const { getAccessTokenSilently } = useAuth0();
   const [formData, setFormData] = useState({
     username: '',
     actualName: '',
@@ -8,6 +10,25 @@ function UserProfile() {
     city: '',
     image: null,
   });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const response = await fetch('/api/user/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const userData = await response.json();
+        setFormData({ ...userData });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUserData();
+  }, [getAccessTokenSilently]);
 
   // Handle change in form inputs
   const handleChange = (event) => {
