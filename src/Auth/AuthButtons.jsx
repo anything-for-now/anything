@@ -1,16 +1,11 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import Login from "./Login.jsx";
-import Logout from "./Logout.jsx";
 
 function AuthButtons() {
+  const { isAuthenticated } = useAuth0();
 
-  const {
-    isAuthenticated,
-  } = useAuth0();
-
-  return isAuthenticated ? <Logout /> : <Login />
+  return !isAuthenticated ? <Login /> : null;
 }
 
 export default AuthButtons;
-
