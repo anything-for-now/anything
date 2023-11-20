@@ -14,6 +14,35 @@ export const fetchData = createAsyncThunk('item/fetchData', async () => {
   }
 });
 
+export const editItem = createAsyncThunk(
+  'item/editItem',
+  async (updatedItem) => {
+    try {
+      const response = await axios.put(
+        `${SERVER_URL}/items/${updatedItem.id}`,
+        updatedItem
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error updating item:', error);
+      throw error;
+    }
+  }
+);
+
+export const deleteItem = createAsyncThunk(
+  'item/deleteItem',
+  async (itemId) => {
+    try {
+      await axios.delete(`${SERVER_URL}/items/${itemId}`);
+      return itemId;
+    } catch (error) {
+      console.error('Error deleting item:', error);
+      throw error;
+    }
+  }
+);
+
 // Thunk for uploading an image
 export const uploadFile = createAsyncThunk('item/uploadFile', async (file, { getState }) => {
   const formData = new FormData();
@@ -65,7 +94,7 @@ const itemSlice = createSlice({
     formData: {
       type: '',
       itemName: '',
-      image: 'https://placehold.co/200x200' ,
+      image: 'https://placehold.co/200x200',
       location: '',
       description: '',
     },
@@ -105,11 +134,25 @@ const itemSlice = createSlice({
       })
       .addCase(fetchData.rejected, (state) => {
         // Handle rejected state if needed
+      })
+      .addCase(editItem.fulfilled, (state, action) => {
+        const updatedItem = action.payload;
+        state.items = state.items.map(item =>
+          item.id === updatedItem.id ? updatedItem : item
+        );
+      })
+      .addCase(deleteItem.fulfilled, (state, action) => {
+        const itemIdToDelete = action.payload;
+        state.items = state.items.filter(item => item.id !== itemIdToDelete);
       });
   },
 });
 
-export const { showModal, hideModal, fileChange, formInputChange} =
-  itemSlice.actions;
+export const {
+  showModal,
+  hideModal,
+  fileChange,
+  formInputChange,
+} = itemSlice.actions;
 
 export default itemSlice.reducer;
