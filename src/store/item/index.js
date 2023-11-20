@@ -1,5 +1,5 @@
 'use strict';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const SERVER_URL = import.meta.env.SERVER_URL || 'http://localhost:3001';
@@ -84,6 +84,7 @@ export const addItem = createAsyncThunk('item/addItem', async (_, { dispatch, ge
   }
 });
 
+export const setEditItemData = createAction('item/setEditItemData');
 
 const itemSlice = createSlice({
   name: 'item',
@@ -123,6 +124,17 @@ const itemSlice = createSlice({
         state.formData.type = value;
       }
     },
+    setEditItemData: (state, action) => {
+      // Set the item data in the state for pre-populating the form
+      const { id, itemName, description, location, image } = action.payload;
+      state.formData = {
+        type: '', // Add type if needed
+        itemName,
+        image,
+        location,
+        description,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -137,13 +149,13 @@ const itemSlice = createSlice({
       })
       .addCase(editItem.fulfilled, (state, action) => {
         const updatedItem = action.payload;
-        state.items = state.items.map(item =>
+        state.items = state.items.map((item) =>
           item.id === updatedItem.id ? updatedItem : item
         );
       })
       .addCase(deleteItem.fulfilled, (state, action) => {
         const itemIdToDelete = action.payload;
-        state.items = state.items.filter(item => item.id !== itemIdToDelete);
+        state.items = state.items.filter((item) => item.id !== itemIdToDelete);
       });
   },
 });

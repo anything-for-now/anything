@@ -1,23 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Container, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { editItem, deleteItem, fetchData } from '../store/item';
+import { deleteItem, fetchData } from '../store/item';
+import EditFormModal from './EditFormModal';
 import './ItemCard.css';
 
 function ItemCard({ id, itemName, description, location, image }) {
+  const item = {
+    id, itemName, description, location, image
+  }
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const dispatch = useDispatch();
 
   const handleEdit = async () => {
-    // Pass the item's ID to the editItem function
-    dispatch(editItem({ id, itemName, description, location, image }));
-    // Fetch updated data after edit
-    dispatch(fetchData());
+    // Pass the item data to the EditFormModal
+    handleShow();
   };
 
   const handleDelete = async () => {
-    // Pass the item's ID to the deleteItem function
     await dispatch(deleteItem(id));
-    // Fetch updated data after deletion
     dispatch(fetchData());
   };
 
@@ -48,6 +53,12 @@ function ItemCard({ id, itemName, description, location, image }) {
           </Button>
         </div>
       </Container>
+      <EditFormModal
+        formType={'Edit'}
+        show={show}
+        handleClose={handleClose}
+        item={item}
+      />
     </>
   );
 }
