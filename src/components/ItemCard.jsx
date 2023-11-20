@@ -1,6 +1,5 @@
 import React from 'react';
-import Image from 'react-bootstrap/Image';
-import Container from 'react-bootstrap/Container';
+import { Image, Container, Button } from 'react-bootstrap';
 import './ItemCard.css';
 
 function ItemCard({ itemName, description, location, image }) {
@@ -17,6 +16,14 @@ function ItemCard({ itemName, description, location, image }) {
           <div>
             <h3>Possible Match Found -- needs work</h3>
           </div>
+        </div>
+        <div className='buttons'>
+          <Button className='item-buttons' variant='info'>
+            EDIT
+          </Button>
+          <Button className='item-buttons' variant='danger'>
+            DELETE
+          </Button>
         </div>
       </Container>
     </>
