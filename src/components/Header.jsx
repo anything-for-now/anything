@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Container, Nav, Navbar, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { withAuth0 } from '@auth0/auth0-react';
-import AuthButtons from '../Auth/AuthButtons'
+import AuthButtons from '../Auth/AuthButtons';
+import ProfileDropdown from '../Auth/ProfileDropdown';
+
 
 const Header = () => {
 
@@ -24,6 +26,7 @@ const Header = () => {
               </Link>
             </Nav>
           </Navbar.Collapse>
+          <ProfileDropdown/>
           <AuthButtons />
         </Container>
       </Navbar>
