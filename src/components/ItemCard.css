@@ -14,5 +14,13 @@
 
 .item-card-description {
   text-align: start;
-  margin-left: 2rem;
 }
+
+.item-card-body {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 2rem;
+}
+
