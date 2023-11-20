@@ -3,6 +3,7 @@
   justify-content: start;
   align-items: center;
   margin-bottom: 2rem;
+  position: relative;
   padding: 0;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
     rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
@@ -26,5 +27,16 @@
   align-items: center;
   justify-content: space-between;
   margin: 0 2rem;
+}
+
+.buttons {
+  display: flex;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.item-buttons {
+  margin: 1rem 1rem 0 0;
 }
 
