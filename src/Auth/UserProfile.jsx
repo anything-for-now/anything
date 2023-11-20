@@ -1,72 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Card, Form, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserProfile, updateUserProfile } from '../store/user/index.js';
+import { useNavigate } from 'react-router-dom';
 
 function UserProfile() {
-  const { getAccessTokenSilently, user } = useAuth0();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useAuth0();
+  const profileData = useSelector((state) => state.userProfile.profileData);
   const [formData, setFormData] = useState({
     nickname: '',
     city: '',
     image: null,
   });
-  const [cityCoordinates, setCityCoordinates] = useState(null);
 
-  const updateCityCoordinates = async (cityName) => {
-    try {
-      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(cityName)}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`);
-      const data = await response.json();
-      const location = data.results[0]?.geometry.location;
-      if (location) {
-        setCityCoordinates(location);
-      }
-    } catch (error) {
-      console.error("Geocoding error: ", error);
-    }
-  };
-
+  // Fetch user profile data on component mount
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        const response = await fetch('/api/user/profile', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const userData = await response.json();
-        setFormData({
-          nickname: userData.nickname || '',
-          city: userData.city || '',
-          image: user.picture || null,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchUserData();
-  }, [getAccessTokenSilently, user.picture]);
-
-  useEffect(() => {
-    if (formData.city) {
-      updateCityCoordinates(formData.city);
+    if (user?.sub) {
+      dispatch(fetchUserProfile(user.sub));
     }
-  }, [formData.city]);
+  }, [user?.sub, dispatch]);
+
+  // Update formData when profileData changes
+  useEffect(() => {
+    if (profileData) {
+      setFormData({
+        nickname: profileData.nickname || '',
+        city: profileData.city || '',
+        image: profileData.image || null, // Assuming the image is a URL
+      });
+    }
+  }, [profileData]);
 
   const handleChange = (event) => {
-    const { name, value, files } = event.target;
+    const { name, value } = event.target;
     setFormData({
       ...formData,
-      [name]: files ? files[0] : value,
+      [name]: value,
     });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
-    console.log("City Coordinates: ", cityCoordinates);
+    dispatch(updateUserProfile({
+      ...formData,
+      userId: user.sub, 
+    }));
+    navigate('/');
   };
+
   return (
     <Card className="user-profile-card">
       <Card.Body>
