@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Button } from 'react-bootstrap';
 import './Map.css';
+
 
 // const mapContainerStyle = {
 //   height: '500px',
@@ -13,7 +14,7 @@ const defaultCenter = {
   lng: -122.3328,
 };
 
-const Map = ({handleAddLocation, handleClose}) => {
+const Map = ({ handleAddLocation, handleClose, userCoordinates }) => {
   const [mapCenter, setMapCenter] = useState(defaultCenter);
   const [marker, setMarker] = useState(null);
   const [address, setAddress] = useState('');
@@ -37,6 +38,12 @@ const Map = ({handleAddLocation, handleClose}) => {
       }
     });
   };
+
+  useEffect(() => {
+    if (userCoordinates) {
+      setMapCenter(userCoordinates);
+    }
+  }, [userCoordinates]);
 
   const handleAddMarker = () => {
     const geocoder = new window.google.maps.Geocoder();
@@ -72,7 +79,7 @@ const Map = ({handleAddLocation, handleClose}) => {
   };
 
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+   <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
       <div id='google-map'>
         <GoogleMap
           id='map-container'

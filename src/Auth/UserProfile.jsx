@@ -1,15 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Card, Form, Button } from 'react-bootstrap';
 
 function UserProfile() {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, user } = useAuth0();
   const [formData, setFormData] = useState({
-    username: '',
-    actualName: '',
-    email: '',
+    nickname: '',
     city: '',
     image: null,
   });
+  const [cityCoordinates, setCityCoordinates] = useState(null);
+
+  const updateCityCoordinates = async (cityName) => {
+    try {
+      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(cityName)}&key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`);
+      const data = await response.json();
+      const location = data.results[0]?.geometry.location;
+      if (location) {
+        setCityCoordinates(location);
+      }
+    } catch (error) {
+      console.error("Geocoding error: ", error);
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,16 +34,25 @@ function UserProfile() {
           },
         });
         const userData = await response.json();
-        setFormData({ ...userData });
+        setFormData({
+          nickname: userData.nickname || '',
+          city: userData.city || '',
+          image: user.picture || null,
+        });
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchUserData();
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, user.picture]);
 
-  // Handle change in form inputs
+  useEffect(() => {
+    if (formData.city) {
+      updateCityCoordinates(formData.city);
+    }
+  }, [formData.city]);
+
   const handleChange = (event) => {
     const { name, value, files } = event.target;
     setFormData({
@@ -39,81 +61,62 @@ function UserProfile() {
     });
   };
 
-  // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Add validation and submit logic here
+    // Handle form submission logic here
     console.log(formData);
+    console.log("City Coordinates: ", cityCoordinates);
   };
-
   return (
-    <div className="user-profile">
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Given Name</label>
-          <input
-            type="text"
-            name="actualName"
-            value={formData.actualName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>City/Address</label>
-          <input
-            type="text"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Profile Image</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleChange}
-          />
-          {formData.image && (
-            <img
-              src={URL.createObjectURL(formData.image)}
-              alt="Profile"
-              className="preview-image"
+    <Card className="user-profile-card">
+      <Card.Body>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Nickname</Form.Label>
+            <Form.Control
+              type="text"
+              name="nickname"
+              value={formData.nickname}
+              onChange={handleChange}
+              required
             />
-          )}
-        </div>
+          </Form.Group>
 
-        <button type="submit">Update Profile</button>
-      </form>
-    </div>
+          <Form.Group className="mb-3">
+            <Form.Label>City</Form.Label>
+            <Form.Control
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Profile Image</Form.Label>
+            <Form.Control
+              type="file"
+              name="image"
+              onChange={handleChange}
+            />
+            {formData.image && (
+              <img
+                src={URL.createObjectURL(formData.image)}
+                alt="Profile"
+                className="preview-image mt-3"
+                style={{ width: '100px', height: '100px' }}
+              />
+            )}
+          </Form.Group>
+
+          <Button variant="primary" type="submit">
+            Update Profile
+          </Button>
+        </Form>
+      </Card.Body>
+    </Card>
   );
 }
 
 export default UserProfile;
-
