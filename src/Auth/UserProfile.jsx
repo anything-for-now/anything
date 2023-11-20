@@ -1,119 +1,106 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Card, Form, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserProfile, updateUserProfile } from '../store/user/index.js';
+import { useNavigate } from 'react-router-dom';
 
 function UserProfile() {
-  const { getAccessTokenSilently } = useAuth0();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useAuth0();
+  const profileData = useSelector((state) => state.userProfile.profileData);
   const [formData, setFormData] = useState({
-    username: '',
-    actualName: '',
-    email: '',
+    nickname: '',
     city: '',
     image: null,
   });
 
+  // Fetch user profile data on component mount
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        const response = await fetch('/api/user/profile', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const userData = await response.json();
-        setFormData({ ...userData });
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    if (user?.sub) {
+      dispatch(fetchUserProfile(user.sub));
+    }
+  }, [user?.sub, dispatch]);
 
-    fetchUserData();
-  }, [getAccessTokenSilently]);
+  // Update formData when profileData changes
+  useEffect(() => {
+    if (profileData) {
+      setFormData({
+        nickname: profileData.nickname || '',
+        city: profileData.city || '',
+        image: profileData.image || null, // Assuming the image is a URL
+      });
+    }
+  }, [profileData]);
 
-  // Handle change in form inputs
   const handleChange = (event) => {
-    const { name, value, files } = event.target;
+    const { name, value } = event.target;
     setFormData({
       ...formData,
-      [name]: files ? files[0] : value,
+      [name]: value,
     });
   };
 
-  // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Add validation and submit logic here
-    console.log(formData);
+    dispatch(updateUserProfile({
+      ...formData,
+      userId: user.sub, 
+    }));
+    navigate('/');
   };
 
   return (
-    <div className="user-profile">
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Given Name</label>
-          <input
-            type="text"
-            name="actualName"
-            value={formData.actualName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>City/Address</label>
-          <input
-            type="text"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Profile Image</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleChange}
-          />
-          {formData.image && (
-            <img
-              src={URL.createObjectURL(formData.image)}
-              alt="Profile"
-              className="preview-image"
+    <Card className="user-profile-card">
+      <Card.Body>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Nickname</Form.Label>
+            <Form.Control
+              type="text"
+              name="nickname"
+              value={formData.nickname}
+              onChange={handleChange}
+              required
             />
-          )}
-        </div>
+          </Form.Group>
 
-        <button type="submit">Update Profile</button>
-      </form>
-    </div>
+          <Form.Group className="mb-3">
+            <Form.Label>City</Form.Label>
+            <Form.Control
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Profile Image</Form.Label>
+            <Form.Control
+              type="file"
+              name="image"
+              onChange={handleChange}
+            />
+            {formData.image && (
+              <img
+                src={URL.createObjectURL(formData.image)}
+                alt="Profile"
+                className="preview-image mt-3"
+                style={{ width: '100px', height: '100px' }}
+              />
+            )}
+          </Form.Group>
+
+          <Button variant="primary" type="submit">
+            Update Profile
+          </Button>
+        </Form>
+      </Card.Body>
+    </Card>
   );
 }
 
 export default UserProfile;
-
