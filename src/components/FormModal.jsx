@@ -34,6 +34,10 @@ function FormModal({ formType }) {
     dispatch(hideModal());
   };
 
+  const handleAddLocation = (address) => {
+    dispatch(formInputChange({ field: 'location', value: address }));
+  }
+
   return (
     <>
       <Modal show={showModal} onHide={() => dispatch(hideModal())}>
@@ -90,7 +94,7 @@ function FormModal({ formType }) {
           </Button>
         </Modal.Footer>
       </Modal>
-      <MapModal show={show} handleClose={handleClose} />
+      <MapModal show={show} handleClose={handleClose} handleAddLocation={handleAddLocation} />
     </>
   );
 }

@@ -1,0 +1,15 @@
+#google-map {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+#location-button {
+  margin: 0 1rem 1rem;
+}
+
+#map-container {
+  height: 500px;
+  width: 500px;
+}

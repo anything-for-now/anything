@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { Button } from 'react-bootstrap';
+import './Map.css';
 
-const mapContainerStyle = {
-  height: '500px',
-  width: '500px',
-};
+// const mapContainerStyle = {
+//   height: '500px',
+//   width: '600px',
+// };
 
 const defaultCenter = {
   lat: 47.608013,
   lng: -122.3328,
 };
 
-const Map = () => {
+const Map = ({handleAddLocation, handleClose}) => {
   const [mapCenter, setMapCenter] = useState(defaultCenter);
   const [marker, setMarker] = useState(null);
   const [address, setAddress] = useState('');
@@ -36,13 +38,9 @@ const Map = () => {
     });
   };
 
-  const handleAddressChange = (event) => {
-    setAddress(event.target.value);
-  };
-
   const handleAddMarker = () => {
     const geocoder = new window.google.maps.Geocoder();
-
+    handleAddLocation(address);
     if (address) {
       // Geocode the address entered by the user
       geocoder.geocode({ address: address }, (results, status) => {
@@ -70,27 +68,25 @@ const Map = () => {
         'Please enter an address or click on the map to select a location.'
       );
     }
+    handleClose();
   };
 
   return (
     <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-      <input
-        type='text'
-        value={address}
-        onChange={handleAddressChange}
-        placeholder='Enter an address'
-      />
-      <button onClick={handleAddMarker}>Add Location</button>
-
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={mapCenter}
-        zoom={8}
-        onClick={handleMapClick}
-      >
-        {marker && <Marker position={marker} />}
-        {tempMarker && <Marker position={tempMarker} />}
-      </GoogleMap>
+      <div id='google-map'>
+        <GoogleMap
+          id='map-container'
+          center={mapCenter}
+          zoom={8}
+          onClick={handleMapClick}
+        >
+          {marker && <Marker position={marker} />}
+          {tempMarker && <Marker position={tempMarker} />}
+        </GoogleMap>
+      </div>
+      <Button id='location-button' variant='primary' onClick={handleAddMarker}>
+        Add Location
+      </Button>
     </LoadScript>
   );
 };
