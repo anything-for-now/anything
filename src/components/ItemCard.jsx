@@ -1,20 +1,24 @@
 import React from 'react';
 import { Image, Container, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { editItem, deleteItem } from '../store/item';
+import { editItem, deleteItem, fetchData } from '../store/item';
 import './ItemCard.css';
 
 function ItemCard({ id, itemName, description, location, image }) {
   const dispatch = useDispatch();
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     // Pass the item's ID to the editItem function
     dispatch(editItem({ id, itemName, description, location, image }));
+    // Fetch updated data after edit
+    dispatch(fetchData());
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     // Pass the item's ID to the deleteItem function
-    dispatch(deleteItem(id));
+    await dispatch(deleteItem(id));
+    // Fetch updated data after deletion
+    dispatch(fetchData());
   };
 
   return (
