@@ -13,7 +13,7 @@ function Login() {
     loginWithRedirect();
   }
 
-  return ! isAuthenticated &&
+  return !isAuthenticated &&
     <Button onClick={handleLogin}>Log in</Button>
   ;
 }
