@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import ItemCard from './ItemCard';
-import { showModal, hideModal } from '../store/item';
+import { showModal, hideModal, fetchData } from '../store/item';
 import FormModal from './FormModal';
 
 function Lost() {
@@ -14,8 +14,13 @@ function Lost() {
   const [forceUpdate, setForceUpdate] = useState(false);
 
   useEffect(() => {
+    console.log("HERES THE ITEMS STATE:", itemsState)
     setForceUpdate((prev) => !prev);
   }, [itemsState]);
+
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
 
   const handleShowModal = () => {
     dispatch(showModal());
