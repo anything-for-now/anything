@@ -14,6 +14,7 @@ function Lost() {
   const [forceUpdate, setForceUpdate] = useState(false);
 
   useEffect(() => {
+    console.log("HERES THE ITEMS STATE:", itemsState)
     setForceUpdate((prev) => !prev);
   }, [itemsState]);
 

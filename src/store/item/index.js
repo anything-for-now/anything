@@ -54,7 +54,8 @@ const itemSlice = createSlice({
     },
     addItem: (state) => {
       // Send a POST request to the server
-      console.log("HERES THE ITEM ", state)
+      console.log('HERES THE ITEM ', state);
+      state.items.push(state.formData);
       axios
         .post(`${SERVER_URL}/items`, state.formData)
         .then((response) => {
@@ -64,19 +65,8 @@ const itemSlice = createSlice({
         .catch((error) => {
           // Handle errors
           console.error('Error adding item:', error);
-        })
-        .finally(() => {
-          // Reset the form data and any loading states
-          state.formData = {
-            type: '',
-            itemName: '',
-            image: null,
-            location: '',
-            description: '',
-          };
-          state.loading = false;
-          state.error = null;
         });
+
     },
   },
   extraReducers: (builder) => {
