@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 
 const mapContainerStyle = {
   height: "400px",
@@ -68,7 +68,7 @@ const GoogleMaps = () => {
   };
   
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+    <>
       <input
         type="text"
         value={address}
@@ -88,7 +88,7 @@ const GoogleMaps = () => {
         ))}
         {tempMarker && <Marker position={tempMarker} />}
       </GoogleMap>
-    </LoadScript>
+    </>
   );
 };
 

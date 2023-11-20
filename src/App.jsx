@@ -11,12 +11,13 @@ import Found from './components/Found.jsx';
 import UserProfile from './Auth/UserProfile.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoadScriptWrapper from './components/LoadScriptWrapper.jsx';
 import GoogleMaps from './components/GoogleMaps.jsx';
 
 function App() {
   return (
-    <>
-      <Provider store={store}>
+    <Provider store={store}>
+      <LoadScriptWrapper>
         <div id='root'>
           <Router>
             <Header />
@@ -29,9 +30,10 @@ function App() {
             <Footer />
           </Router>
         </div>
-      </Provider>
-    </>
+      </LoadScriptWrapper>
+    </Provider>
   );
 }
 
 export default App;
+
