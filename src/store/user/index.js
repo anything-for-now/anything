@@ -1,6 +1,3 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
 const SERVER_URL = import.meta.env.SERVER_URL || 'http://localhost:3001';
 
 // Async thunk for fetching user profile
@@ -36,3 +33,4 @@ const userProfileSlice = createSlice({
 
 export const { /* reducer actions */ } = userProfileSlice.actions;
 export default userProfileSlice.reducer;
+

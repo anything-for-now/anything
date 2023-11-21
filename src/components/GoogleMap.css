@@ -1,0 +1,84 @@
+.map-container {
+  position: relative; /* This is necessary for absolute positioning the legend */
+  width: 800px; /* Set a specific width for the map container */
+  height: calc(400px + 40px); /* Height of map plus legend */
+  margin: auto; /* Center the map container in the parent */
+}
+  
+  .custom-marker-found {
+    background-color: #4285F4;
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 10px 15px;
+    position: absolute;
+    transform: translate(-50%, -100%);
+    white-space: nowrap;
+  }
+  
+  .custom-marker-found::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translate(-50%, 0);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #4285F4;
+  }
+
+
+  .custom-marker-lost {
+    background-color: #f44242;
+    border-radius: 20px;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 10px 15px;
+    position: absolute;
+    transform: translate(-50%, -100%);
+    white-space: nowrap;
+  }
+  
+  .custom-marker-lost::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    transform: translate(-50%, 0);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #f44242;
+  }
+  
+  .legend {
+    position: absolute; /* Position the legend absolutely within the map container */
+    bottom: -50px; /* Position it 10px from the bottom */
+    left: 50%; /* Start at 50% from the left */
+    transform: translateX(-50%); /* Center the legend */
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Align items vertically */
+    background: white;
+    /* padding: 20px; */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 20px; /* Space between legend items */
+    padding: 40px;
+  }
+  
+  .legend-item .custom-marker-lost,
+  .legend-item .custom-marker-found {
+    width: 100px; /* Size of the marker */
+    height: 40px; /* Size of the marker */
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Align items vertically */
+    font-size: 15px;
+    transform: translate(-50%, 0);
+  }
+  
