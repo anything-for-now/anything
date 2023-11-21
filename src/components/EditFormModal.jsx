@@ -8,80 +8,66 @@ import {
   fileChange,
   formInputChange,
   editItem,
-  uploadFile
+  uploadFile,
 } from '../store/item';
 import MapModal from './MapModal';
 import './FormModal.css';
 
 function EditFormModal({ formType, show, handleClose, item }) {
+  const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({
-    id: '',
-    type: '',
-    itemName: '',
-    description: '',
-    location: '',
-    image: '',
+    id: item.id || '',
+    type: item.type || '',
+    itemName: item.itemName || '',
+    image: item.image || '',
+    location: item.location || '',
+    description: item.description || '',
   });
-
   const [mapShow, setMapShow] = useState(false);
 
-  const handleMapClose = () => setMapShow(false);
-  const handleMapShow = () => setMapShow(true);
-    const dispatch = useDispatch();
-  const formData = useSelector((state) => state.item.formData);
+  useEffect(() => {
+    setFormValues({
+      id: item.id || '',
+      type: item.type || '',
+      itemName: item.itemName || '',
+      image: item.image || '',
+      location: item.location || '',
+      description: item.description || '',
+    });
+  }, [item]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
   };
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const uploadedImage = await dispatch(uploadFile(file)).unwrap();
-      setFormValues({ ...formValues, image: uploadedImage }); 
+      setFormValues({ ...formValues, image: uploadedImage });
     }
   };
 
-  const handleSaveChanges = async () => {
-    const updatedItem = {
-      id: formValues.id,
-      type: formValues.type,
-      itemName: formValues.itemName,
-      image: formValues.image,
-      location: formValues.location,
-      description: formValues.description,
-    };
+  const handleMapShow = () => {
+    setMapShow(true);
+  };
 
-    await dispatch(editItem(updatedItem));
+  const handleSaveChanges = () => {
+    // Dispatch action to save changes to Redux state
+    dispatch(editItem(formValues));
     handleClose();
   };
 
-  const handleAddLocation = (address) => {
-    // Update local state
-    setFormValues({ ...formValues, location: address });
-    // Dispatch action to update Redux state
-    dispatch(formInputChange({ field: 'location', value: address }));
+  const handleAddLocation = (selectedLocation) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      location: selectedLocation,
+    }));
   };
-
-  useEffect(() => {
-    if (item) {
-      console.log("HERES ITEM EFFECT", item)
-      setFormValues({
-        id: item.id || '',
-        type: item.type || '',
-        itemName: item.itemName || '',
-        description: item.description || '',
-        location: item.location || '',
-        image: item.image || '',
-      });
-    }
-  }, [item]);
-
-  useEffect(() => {
-    // Synchronize the local state with the Redux state
-    setFormValues({ ...formData });
-  }, [formData]);
 
   return (
     <>
@@ -142,8 +128,17 @@ function EditFormModal({ formType, show, handleClose, item }) {
       </Modal>
       <MapModal
         show={mapShow}
-        handleClose={handleMapClose}
+        handleClose={() => {
+          // Dispatch action to update Redux state only if location changed
+          if (formValues.location !== item.location) {
+            dispatch(
+              formInputChange({ field: 'location', value: formValues.location })
+            );
+          }
+          setMapShow(false);
+        }}
         handleAddLocation={handleAddLocation}
+        itemType={item.type}
       />
     </>
   );
