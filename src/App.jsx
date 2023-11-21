@@ -12,6 +12,7 @@ import GoogleMaps from './components/GoogleMaps.jsx';
 import { withAuth0, useAuth0 } from '@auth0/auth0-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, setUser } from './store/user';
+import placeholderImage from '../assets/map.png';
 
 function App() {
   const dispatch = useDispatch();
@@ -50,7 +51,10 @@ function App() {
         <Router>
           <Header />
           <Routes>
-            <Route exact path='/' element={<GoogleMaps />} />
+            <Route 
+            exact 
+            path='/'
+            element={isAuthenticated ? <GoogleMaps /> : <img src={placeholderImage} alt="Map Placeholder" />} />
             <Route
               exact
               path='/lost'

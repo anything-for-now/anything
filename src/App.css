@@ -48,3 +48,9 @@ footer p {
   color: #888;
 }
 
+img {
+    position: relative; 
+    width: 800px; 
+    height: calc(400px); 
+    margin: auto;
+}
