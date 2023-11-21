@@ -32,6 +32,13 @@ function FormModal({ formType }) {
     dispatch(formInputChange({ field: 'type', value: itemType }));
     dispatch(addItem());
     dispatch(hideModal());
+
+    const formFieldsToReset = ['itemName', 'location', 'description'];
+
+    // Loop through the form fields and dispatch actions to reset them
+    formFieldsToReset.forEach((field) => {
+      dispatch(formInputChange({ field, value: '' }));
+    });
   };
 
   const handleAddLocation = (address) => {
