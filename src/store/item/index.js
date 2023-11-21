@@ -1,5 +1,5 @@
 'use strict';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const SERVER_URL = import.meta.env.SERVER_URL || 'http://localhost:3001';
@@ -13,6 +13,35 @@ export const fetchData = createAsyncThunk('item/fetchData', async () => {
     throw error;
   }
 });
+
+export const editItem = createAsyncThunk(
+  'item/editItem',
+  async (updatedItem) => {
+    try {
+      const response = await axios.put(
+        `${SERVER_URL}/items/${updatedItem.id}`,
+        updatedItem
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error updating item:', error);
+      throw error;
+    }
+  }
+);
+
+export const deleteItem = createAsyncThunk(
+  'item/deleteItem',
+  async (itemId) => {
+    try {
+      await axios.delete(`${SERVER_URL}/items/${itemId}`);
+      return itemId;
+    } catch (error) {
+      console.error('Error deleting item:', error);
+      throw error;
+    }
+  }
+);
 
 // Thunk for uploading an image
 export const uploadFile = createAsyncThunk('item/uploadFile', async (file, { getState }) => {
@@ -56,6 +85,7 @@ export const addItem = createAsyncThunk('item/addItem', async (_, { dispatch, ge
   }
 });
 
+export const setEditItemData = createAction('item/setEditItemData');
 
 const itemSlice = createSlice({
   name: 'item',
@@ -66,7 +96,7 @@ const itemSlice = createSlice({
     formData: {
       type: '',
       itemName: '',
-      image: 'https://placehold.co/200x200' ,
+      image: 'https://placehold.co/200x200',
       location: '',
       description: '',
     },
@@ -95,6 +125,17 @@ const itemSlice = createSlice({
         state.formData.type = value;
       }
     },
+    setEditItemData: (state, action) => {
+      // Set the item data in the state for pre-populating the form
+      const { id, itemName, description, location, image } = action.payload;
+      state.formData = {
+        type: '', // Add type if needed
+        itemName,
+        image,
+        location,
+        description,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -106,11 +147,28 @@ const itemSlice = createSlice({
       })
       .addCase(fetchData.rejected, (state) => {
         // Handle rejected state if needed
+      })
+      .addCase(editItem.fulfilled, (state, action) => {
+        const updatedItem = action.payload;
+        console.log("HERES THE UPDATE ITEM", updatedItem)
+        // Use map to update or add the item
+        state.items = state.items.map((item) =>
+          item._id === updatedItem._id ? updatedItem : item
+        );
+      })
+
+      .addCase(deleteItem.fulfilled, (state, action) => {
+        const itemIdToDelete = action.payload;
+        state.items = state.items.filter((item) => item.id !== itemIdToDelete);
       });
   },
 });
 
-export const { showModal, hideModal, fileChange, formInputChange} =
-  itemSlice.actions;
+export const {
+  showModal,
+  hideModal,
+  fileChange,
+  formInputChange,
+} = itemSlice.actions;
 
 export default itemSlice.reducer;

@@ -19,7 +19,7 @@ const ProfileDropdown = () => {
   };
 
   return (
-    <Dropdown alignRight>
+    <Dropdown>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
         <img 
           src={user.picture} 
