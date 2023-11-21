@@ -1,41 +1,50 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const initialState = {
+  user: null,
+};
+
 const SERVER_URL = import.meta.env.SERVER_URL || 'http://localhost:3001';
 
-// Async thunk for fetching user profile
-export const fetchUserProfile = createAsyncThunk('user/fetchProfile', async (userId, { getState }) => {
-  const response = await axios.get(`${SERVER_URL}/user/${userId}`);
-  return response.data;
-});
+// Async thunk for checking if the user exists in the database
+export const fetchUser = createAsyncThunk(
+  'user/fetchUser',
+  async (userData) => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const email = userData.email;
 
-// Async thunk for updating user profile
-export const updateUserProfile = createAsyncThunk('user/updateProfile', async (userData, { getState }) => {
-  const response = await axios.put(`${SERVER_URL}/user/update`, userData);
-  return response.data;
-});
+      console.log('HERE THE EMAIL', email);
 
-const userProfileSlice = createSlice({
-  name: 'userProfile',
-  initialState: {
-    profileData: {},
-    // other initial state properties...
-  },
+      // Check if the user exists
+      const postResponse = await axios.post(`${SERVER_URL}/users`, userData);
+
+      console.log('HERES POST USER DATA', postResponse.data);
+      return postResponse.data; // Assuming the server responds with the user data
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
   reducers: {
-    // your reducers...
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchUserProfile.fulfilled, (state, action) => {
-        state.profileData = action.payload;
-      })
-      .addCase(updateUserProfile.fulfilled, (state, action) => {
-        state.profileData = action.payload;
-      });
-      // add other cases as needed...
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+      state.user = action.payload;
+    });
   },
 });
 
-export const { /* export any reducer actions if needed */ } = userProfileSlice.actions;
+// Export the action creator separately
+export const { setUser } = userSlice.actions;
 
-export default userProfileSlice.reducer;
+export default userSlice.reducer;

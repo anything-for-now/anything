@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserProfile, updateUserProfile } from '../store/user/index.js';
+import {
+  fetchUserProfile,
+  updateUserProfile,
+} from '../store/user-profile/index.js';
 import { useNavigate } from 'react-router-dom';
 
 function UserProfile() {
@@ -15,6 +18,11 @@ function UserProfile() {
     city: '',
     image: null,
   });
+
+  const userState = useSelector((state) => state.userProfile.profileData);
+
+  console.log('HERES THE USER STATE:', userState);
+  console.log('HERES THE USER INFO', user);
 
   // Fetch user profile data on component mount
   useEffect(() => {
@@ -44,57 +52,55 @@ function UserProfile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(updateUserProfile({
-      ...formData,
-      userId: user.sub, 
-    }));
+    dispatch(
+      updateUserProfile({
+        ...formData,
+        userId: user.sub,
+      })
+    );
     navigate('/');
   };
 
   return (
-    <Card className="user-profile-card">
+    <Card className='user-profile-card'>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>Nickname</Form.Label>
             <Form.Control
-              type="text"
-              name="nickname"
+              type='text'
+              name='nickname'
               value={formData.nickname}
               onChange={handleChange}
               required
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>City</Form.Label>
             <Form.Control
-              type="text"
-              name="city"
+              type='text'
+              name='city'
               value={formData.city}
               onChange={handleChange}
               required
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>Profile Image</Form.Label>
-            <Form.Control
-              type="file"
-              name="image"
-              onChange={handleChange}
-            />
+            <Form.Control type='file' name='image' onChange={handleChange} />
             {formData.image && (
               <img
                 src={URL.createObjectURL(formData.image)}
-                alt="Profile"
-                className="preview-image mt-3"
+                alt='Profile'
+                className='preview-image mt-3'
                 style={{ width: '100px', height: '100px' }}
               />
             )}
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button variant='primary' type='submit'>
             Update Profile
           </Button>
         </Form>

@@ -3,11 +3,13 @@
 import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import itemReducer from './item';
-import userProfileReducer from './user';
+import userProfileReducer from './user-profile';
+import userReducer from './user';
 
 const reducer = combineReducers({
   item: itemReducer,
-  userProfile: userProfileReducer, 
+  userProfile: userProfileReducer,
+  user: userReducer,
 });
 
 const store = configureStore({

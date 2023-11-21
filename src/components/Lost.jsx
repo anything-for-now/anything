@@ -14,7 +14,7 @@ function Lost() {
   const [forceUpdate, setForceUpdate] = useState(false);
 
   useEffect(() => {
-    console.log("HERES THE ITEMS STATE:", itemsState)
+    console.log('HERES THE ITEMS STATE:', itemsState);
     setForceUpdate((prev) => !prev);
   }, [itemsState]);
 
@@ -29,6 +29,10 @@ function Lost() {
   const handleHideModal = () => {
     dispatch(hideModal());
   };
+
+  const userState = useSelector((state) => state.user);
+
+  console.log('HERES THE USER STATE', userState);
 
   return (
     <>
