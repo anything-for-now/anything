@@ -8,7 +8,6 @@ const defaultCenter = {
   lng: -122.3328,
 };
 
-
 const Map = ({ handleAddLocation, handleClose, itemType }) => {
   const [mapCenter, setMapCenter] = useState(defaultCenter);
   const [items, setItems] = useState([]); 
@@ -85,48 +84,9 @@ const Map = ({ handleAddLocation, handleClose, itemType }) => {
         </div>
       </OverlayView>
     );
-
-  useEffect(() => {
-    if (userCoordinates) {
-      setMapCenter(userCoordinates);
-    }
-  }, [userCoordinates]);
-
-  const handleAddMarker = () => {
-    const geocoder = new window.google.maps.Geocoder();
-    handleAddLocation(address);
-    if (address) {
-      // Geocode the address entered by the user
-      geocoder.geocode({ address: address }, (results, status) => {
-        if (status === 'OK') {
-          const location = results[0].geometry.location;
-          const newMarker = {
-            lat: location.lat(),
-            lng: location.lng(),
-          };
-          setMarker(newMarker);
-          setMapCenter(newMarker);
-          setAddress('');
-        } else {
-          alert(
-            'Geocode was not successful for the following reason: ' + status
-          );
-        }
-      });
-    } else if (tempMarker) {
-      setMarker(tempMarker);
-      setMapCenter(tempMarker);
-      setTempMarker(null);
-    } else {
-      alert(
-        'Please enter an address or click on the map to select a location.'
-      );
-    }
-    handleClose();
-  };
+  }
 
   return (
-
     <>
       <div id='google-map'>
         <GoogleMap
