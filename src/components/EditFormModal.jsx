@@ -8,6 +8,7 @@ import {
   fileChange,
   formInputChange,
   editItem,
+  uploadFile
 } from '../store/item';
 import MapModal from './MapModal';
 import './FormModal.css';
@@ -32,6 +33,14 @@ function EditFormModal({ formType, show, handleClose, item }) {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const uploadedImage = await dispatch(uploadFile(file)).unwrap();
+      setFormValues({ ...formValues, image: uploadedImage }); 
+    }
   };
 
   const handleSaveChanges = async () => {
@@ -93,7 +102,7 @@ function EditFormModal({ formType, show, handleClose, item }) {
           </Form.Group>
           <Form.Group controlId='formFile' className='mb-3'>
             <Form.Label>Image</Form.Label>
-            <Form.Control type='file' onChange={handleInputChange} />
+            <Form.Control type='file' onChange={handleFileChange} />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
