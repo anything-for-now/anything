@@ -33,3 +33,4 @@ const userProfileSlice = createSlice({
 
 export const { /* reducer actions */ } = userProfileSlice.actions;
 export default userProfileSlice.reducer;
+

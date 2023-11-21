@@ -1,44 +1,72 @@
-.user-profile {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+/* UserProfile.css */
+.user-profile-card {
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #9b9b9b;
+  color: #ffffff; /* Light text for better contrast */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Stronger shadow for depth */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A more modern font */
 }
 
-.form-group {
+.user-form{
+  padding: 10px;
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: rgb(108, 108, 108);
+  color: #ffffff; /* Light text for better contrast */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Stronger shadow for depth */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A more modern font */
+}
+
+.user-profile-card h5 {
+  color: rgb(4, 0, 255);
   margin-bottom: 15px;
+  font-size: 24px; 
 }
-
 .form-group label {
-  display: block;
-  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .form-group input[type="text"],
 .form-group input[type="email"],
-.form-group input[type="file"] {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
+.form-group input[type="url"] { /* Added type="url" for the profile image input */
+  background-color: #222; /* Even darker fields for contrast */
+  color: #fff;
+  border: 1px solid #555; /* Slightly lighter border for visibility */
+  padding: 10px; /* More padding for a better touch area */
   border-radius: 4px;
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group input[type="email"]::placeholder,
+.form-group input[type="url"]::placeholder { /* Placeholder styles */
+  color: #bbb; /* Lighter color for placeholders */
 }
 
 .preview-image {
-  max-width: 100%;
-  height: auto;
-  margin-top: 10px;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ffbd59;
+  display: block; /* Ensures the image does not inline */
+  margin: 10px auto; /* Center the image */
 }
 
 button {
-  padding: 10px 15px;
-  border: none;
   background-color: #007bff;
-  color: white;
+  border: none;
+  padding: 10px 20px; /* More horizontal padding for a wider button */
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 20px; /* Space above the button */
 }
 
 button:hover {
   background-color: #0056b3;
 }
+
+/* If using Bootstrap, you can remove the custom styles for button */
