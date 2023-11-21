@@ -150,10 +150,13 @@ const itemSlice = createSlice({
       })
       .addCase(editItem.fulfilled, (state, action) => {
         const updatedItem = action.payload;
+        console.log("HERES THE UPDATE ITEM", updatedItem)
+        // Use map to update or add the item
         state.items = state.items.map((item) =>
-          item.id === updatedItem.id ? updatedItem : item
+          item._id === updatedItem._id ? updatedItem : item
         );
       })
+
       .addCase(deleteItem.fulfilled, (state, action) => {
         const itemIdToDelete = action.payload;
         state.items = state.items.filter((item) => item.id !== itemIdToDelete);

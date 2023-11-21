@@ -5,10 +5,15 @@ import { deleteItem, fetchData } from '../store/item';
 import EditFormModal from './EditFormModal';
 import './ItemCard.css';
 
-function ItemCard({ id, itemName, description, location, image }) {
+function ItemCard({ id, type, itemName, description, location, image }) {
   const item = {
-    id, itemName, description, location, image
-  }
+    id,
+    type,
+    itemName,
+    description,
+    location,
+    image,
+  };
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -16,7 +21,7 @@ function ItemCard({ id, itemName, description, location, image }) {
 
   const dispatch = useDispatch();
 
-  const handleEdit = async () => {
+  const handleEdit = () => {
     // Pass the item data to the EditFormModal
     handleShow();
   };
