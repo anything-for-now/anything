@@ -7,6 +7,7 @@ import {
   updateUserProfile,
 } from '../store/user-profile/index.js';
 import { useNavigate } from 'react-router-dom';
+import './UserProfile.css';
 
 function UserProfile() {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ function UserProfile() {
   const [formData, setFormData] = useState({
     nickname: '',
     city: '',
-    image: null,
+    image: '',
   });
 
   const userState = useSelector((state) => state.userProfile.profileData);
@@ -37,7 +38,7 @@ function UserProfile() {
       setFormData({
         nickname: profileData.nickname || '',
         city: profileData.city || '',
-        image: profileData.image || null, // Assuming the image is a URL
+        image: profileData.image || '', // Assuming image is a URL
       });
     }
   }, [profileData]);
@@ -52,20 +53,29 @@ function UserProfile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(
-      updateUserProfile({
-        ...formData,
-        userId: user.sub,
-      })
-    );
+    dispatch(updateUserProfile({
+      auth0Id: user.sub, // Make sure this matches with the auth0Id in your database
+      ...formData,
+    }));
     navigate('/');
   };
 
   return (
-    <Card className='user-profile-card'>
-      <Card.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className='mb-3'>
+    <Card>
+      <Card.Body className="user-profile-card">
+        <h5>Current Profile</h5>
+        <p><strong>Nickname:</strong> {profileData.nickname || 'Not set'}</p>
+        <p><strong>City:</strong> {profileData.city || 'Not set'}</p>
+        {profileData.image && (
+          <img
+            src={profileData.image}
+            alt="Current Profile"
+            className="preview-image"
+          />
+        )}
+        <hr />
+        <Form className="user-form" onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
             <Form.Label>Nickname</Form.Label>
             <Form.Control
               type='text'
@@ -87,20 +97,27 @@ function UserProfile() {
             />
           </Form.Group>
 
-          <Form.Group className='mb-3'>
-            <Form.Label>Profile Image</Form.Label>
-            <Form.Control type='file' name='image' onChange={handleChange} />
+          <Form.Group className="mb-3">
+            <Form.Label>Profile Image URL</Form.Label>
+            <Form.Control
+              type="text"
+              name="image"
+              value={formData.image}
+              onChange={handleChange}
+              placeholder="Enter image URL"
+            />
             {formData.image && (
               <img
-                src={URL.createObjectURL(formData.image)}
-                alt='Profile'
-                className='preview-image mt-3'
+                src={formData.image}
+                alt="Profile"
+                className="preview-image mt-3"
                 style={{ width: '100px', height: '100px' }}
               />
             )}
           </Form.Group>
 
-          <Button variant='primary' type='submit'>
+          <Button className="btn btn-dark" variant="primary" type="submit">
+
             Update Profile
           </Button>
         </Form>

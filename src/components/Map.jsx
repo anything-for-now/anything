@@ -71,7 +71,7 @@ const Map = ({ handleAddLocation, handleClose, itemType }) => {
       y: -(height / 2),
     });
 
-    const markerIcon = item.type === 'lost' ? '🚩' : '🕵️‍♂️'; 
+    // const markerIcon = item.type === 'lost' ? '🚩' : '🕵️‍♂️'; 
 
     return (
       <OverlayView
@@ -80,7 +80,7 @@ const Map = ({ handleAddLocation, handleClose, itemType }) => {
         getPixelPositionOffset={getPixelPositionOffset}
       >
         <div className="custom-marker">
-          {markerIcon}
+        🕵️‍♂️
         </div>
       </OverlayView>
     );
