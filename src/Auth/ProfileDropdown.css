@@ -1,0 +1,51 @@
+
+/* Style for the dropdown menu */
+.dropdown-menu {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #1c1e21; /* Dark background for contrast */
+  border: none;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4); /* Adds a subtle shadow for depth */
+}
+
+.dropdown-button {
+  display: inline-block; /* Center the button */
+  width: 100px; /* Equal width and height for a circle */
+  height: 40px;
+  border-radius: 50%; /* Makes it a circle */
+  padding: 0; /* Remove padding if not needed */
+  border: none; /* Remove border */
+  background: none; /* No background */
+  box-shadow: none; /* No shadow */
+}
+
+.rounded-circle {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Adds a subtle shadow for depth */
+  background-color: rgb(108, 108, 108);
+}
+
+.profile-image-small{
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+/* Style for the profile image within the dropdown */
+.profile-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.dropdown-item-text{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.edit-profile{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.logout-button{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

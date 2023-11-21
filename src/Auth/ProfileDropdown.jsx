@@ -1,7 +1,9 @@
+// ProfileDropdown.jsx
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Dropdown, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import './ProfileDropdown.css';
 
 const ProfileDropdown = () => {
   const { user, isAuthenticated, isLoading, logout } = useAuth0();
@@ -19,29 +21,29 @@ const ProfileDropdown = () => {
   };
 
   return (
-    <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        <img 
-          src={user.picture} 
-          alt="Profile" 
-          style={{ width: '30px', height: '30px', borderRadius: '50%' }} 
-        />
-      </Dropdown.Toggle>
+    <Dropdown className='dropdown-button'>
+   <Dropdown.Toggle variant="" id="dropdown-basic" className="rounded-circle">
+      <img 
+        src={user.picture} 
+        alt="Profile" 
+        className="profile-image-small"
+      />
+    </Dropdown.Toggle>
 
       <Dropdown.Menu align="end">
-        <div className="dropdown-item" style={{ textAlign: 'left' }}>
+        <div className="dropdown-item-text">
           <img 
             src={user.picture} 
             alt="Profile" 
-            style={{ width: '60px', height: '60px', borderRadius: '50%', marginBottom: '10px' }} 
+            className="profile-image"
           />
           <div>Hello, {user.nickname}</div>
           <div>Email: {user.email}</div>
         </div>
         <Dropdown.Divider />
-        <Dropdown.Item as={Link} to="/edit-profile">Edit Profile</Dropdown.Item>
+        <Dropdown.Item as={Link} to="/edit-profile" className="edit-profile">Edit Profile</Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item as="button" onClick={handleLogout}>Log out</Dropdown.Item>
+        <Dropdown.Item as="button" onClick={handleLogout} className="logout-button">Log out</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
