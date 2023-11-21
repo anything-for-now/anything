@@ -14,6 +14,7 @@ function Found() {
   const [forceUpdate, setForceUpdate] = useState(false);
 
   useEffect(() => {
+    console.log('HERES THE ITEMS STATE:', itemsState);
     setForceUpdate((prev) => !prev);
   }, [itemsState]);
 
@@ -38,6 +39,7 @@ function Found() {
               <ItemCard
                 key={index}
                 id={item._id}
+                type={item.type}
                 itemName={item.itemName}
                 image={item.image}
                 location={item.location}

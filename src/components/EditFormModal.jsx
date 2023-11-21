@@ -14,7 +14,9 @@ import './FormModal.css';
 
 function EditFormModal({ formType, show, handleClose, item }) {
   const [formValues, setFormValues] = useState({
-    title: '',
+    id: '',
+    type: '',
+    itemName: '',
     description: '',
     location: '',
     image: '',
@@ -24,7 +26,7 @@ function EditFormModal({ formType, show, handleClose, item }) {
 
   const handleMapClose = () => setMapShow(false);
   const handleMapShow = () => setMapShow(true);
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
   const formData = useSelector((state) => state.item.formData);
 
   const handleInputChange = (e) => {
@@ -32,24 +34,33 @@ function EditFormModal({ formType, show, handleClose, item }) {
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
     const updatedItem = {
-      itemName: formData.itemName,
-      image: formData.image,
-      location: formData.location,
-      description: formData.description,
+      id: formValues.id,
+      type: formValues.type,
+      itemName: formValues.itemName,
+      image: formValues.image,
+      location: formValues.location,
+      description: formValues.description,
     };
-    dispatch(editItem(updatedItem));
-    dispatch(hideModal());
+
+    await dispatch(editItem(updatedItem));
+    handleClose();
   };
 
   const handleAddLocation = (address) => {
+    // Update local state
+    setFormValues({ ...formValues, location: address });
+    // Dispatch action to update Redux state
     dispatch(formInputChange({ field: 'location', value: address }));
   };
 
   useEffect(() => {
     if (item) {
+      console.log("HERES ITEM EFFECT", item)
       setFormValues({
+        id: item.id || '',
+        type: item.type || '',
         itemName: item.itemName || '',
         description: item.description || '',
         location: item.location || '',
@@ -57,6 +68,11 @@ function EditFormModal({ formType, show, handleClose, item }) {
       });
     }
   }, [item]);
+
+  useEffect(() => {
+    // Synchronize the local state with the Redux state
+    setFormValues({ ...formData });
+  }, [formData]);
 
   return (
     <>

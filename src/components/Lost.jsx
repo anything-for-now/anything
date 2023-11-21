@@ -39,6 +39,7 @@ function Lost() {
               <ItemCard
                 key={index}
                 id={item._id}
+                type={item.type}
                 itemName={item.itemName}
                 image={item.image}
                 location={item.location}
