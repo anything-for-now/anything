@@ -57,6 +57,7 @@ function EditFormModal({ formType, show, handleClose, item }) {
 
   useEffect(() => {
     if (item) {
+      console.log("HERES ITEM EFFECT", item)
       setFormValues({
         id: item.id || '',
         type: item.type || '',
