@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserProfile, updateUserProfile } from '../store/user/index.js';
+import {
+  fetchUserProfile,
+  updateUserProfile,
+} from '../store/user-profile/index.js';
 import { useNavigate } from 'react-router-dom';
 import './UserProfile.css';
 
@@ -16,6 +19,11 @@ function UserProfile() {
     city: '',
     image: '',
   });
+
+  const userState = useSelector((state) => state.userProfile.profileData);
+
+  console.log('HERES THE USER STATE:', userState);
+  console.log('HERES THE USER INFO', user);
 
   // Fetch user profile data on component mount
   useEffect(() => {
@@ -70,19 +78,19 @@ function UserProfile() {
           <Form.Group className="mb-3">
             <Form.Label>Nickname</Form.Label>
             <Form.Control
-              type="text"
-              name="nickname"
+              type='text'
+              name='nickname'
               value={formData.nickname}
               onChange={handleChange}
               required
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Label>City</Form.Label>
             <Form.Control
-              type="text"
-              name="city"
+              type='text'
+              name='city'
               value={formData.city}
               onChange={handleChange}
               required
@@ -109,6 +117,7 @@ function UserProfile() {
           </Form.Group>
 
           <Button className="btn btn-dark" variant="primary" type="submit">
+
             Update Profile
           </Button>
         </Form>
