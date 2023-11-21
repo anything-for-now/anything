@@ -2,20 +2,16 @@ import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from 'react-bootstrap';
 
-function Login() {
+function Login({ onCreateUser }) {
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
 
-  const {
-    isAuthenticated,
-    loginWithRedirect,
-  } = useAuth0();
-
-  function handleLogin() {
-    loginWithRedirect();
-  }
+  const handleLogin = async () => {
+    await loginWithRedirect();
+    onCreateUser(); // Call createUser after login
+  };
 
   return !isAuthenticated &&
-    <Button onClick={handleLogin}>Log in</Button>
-  ;
+    <Button onClick={handleLogin}>Log in</Button>;
 }
-export default Login;
 
+export default Login;

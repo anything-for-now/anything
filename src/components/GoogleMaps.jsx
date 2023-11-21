@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { GoogleMap, Marker } from '@react-google-maps/api';
+import React, { useState, useEffect } from 'react';
+import { GoogleMap, OverlayView } from '@react-google-maps/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchData } from '../store/item'; 
+import './GoogleMap.css';
 
 const mapContainerStyle = {
   height: "400px",
@@ -11,84 +14,83 @@ const defaultCenter = {
   lng: -122.3328
 };
 
+const CustomMarker = ({ text, position, type }) => {
+  const markerClass = type === 'lost' ? 'custom-marker-lost' : 'custom-marker-found';
+
+  return (
+    <OverlayView
+      position={position}
+      mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+      getPixelPositionOffset={(width, height) => ({
+        x: -(width / 2),
+        y: -(height / 2),
+      })}
+    >
+      <div className={markerClass}>
+        {text}
+      </div>
+    </OverlayView>
+  );
+};
+
 const GoogleMaps = () => {
-  const [mapCenter, setMapCenter] = useState(defaultCenter);
+  const dispatch = useDispatch();
   const [markers, setMarkers] = useState([]);
-  const [address, setAddress] = useState('');
-  const [tempMarker, setTempMarker] = useState(null); 
+  const items = useSelector((state) => state.item.items); 
 
-  const handleMapClick = (event) => {
-    const newMarker = {
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng(),
-    };
+  useEffect(() => {
+    dispatch(fetchData()); 
+  }, [dispatch]);
 
-    setTempMarker(newMarker); 
+  useEffect(() => {
+    const geocoder = new window.google.maps.Geocoder();
 
-    // Reverse geocoding to get the address for the clicked location
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ location: newMarker }, (results, status) => {
-      if (status === 'OK' && results[0]) {
-        setAddress(results[0].formatted_address);
-      } else {
-        console.error('Reverse geocoding failed due to: ' + status);
-      }
-    });
-  };
-
-  const handleAddressChange = (event) => {
-    setAddress(event.target.value);
-  };
-
-  const handleAddMarker = () => {
-    const geocoder = new google.maps.Geocoder();
-  
-    if (address) {
-      // Geocode the address entered by the user
-      geocoder.geocode({ address: address }, (results, status) => {
+    items.forEach((item) => {
+      geocoder.geocode({ address: item.location }, (results, status) => {
         if (status === 'OK') {
-          const location = results[0].geometry.location;
-          const newMarker = {
-            lat: location.lat(),
-            lng: location.lng(),
-          };
-          setMarkers([...markers, newMarker]);
-        //   setMapCenter(newMarker); 
-          setAddress(''); 
+          setMarkers((prevMarkers) => [
+            ...prevMarkers,
+            {
+              lat: results[0].geometry.location.lat(),
+              lng: results[0].geometry.location.lng(),
+              text: item.itemName ,
+              type: item.type,
+            }
+          ]);
         } else {
-          alert('Geocode was not successful for the following reason: ' + status);
+          console.error('Geocoding failed: ' + status);
         }
       });
-    } else if (tempMarker) {
-      setMarkers([...markers, tempMarker]);
-      setTempMarker(null); 
-    } else {
-      alert('Please enter an address or click on the map to select a location.');
-    }
-  };
-  
-  return (
-    <>
-      <input
-        type="text"
-        value={address}
-        onChange={handleAddressChange}
-        placeholder="Enter an address"
-      />
-      <button onClick={handleAddMarker}>Add Marker</button>
+    });
+  }, [items]); 
 
+  return (
+    <div className="map-container">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        center={mapCenter}
+        center={defaultCenter}
         zoom={8}
-        onClick={handleMapClick}
       >
-        {markers.map((position, idx) => (
-          <Marker key={idx} position={position} />
+        {markers.map((marker, idx) => (
+           <CustomMarker
+           key={idx}
+           text={marker.text}
+           position={{ lat: marker.lat, lng: marker.lng }}
+           type={marker.type} 
+         />
         ))}
-        {tempMarker && <Marker position={tempMarker} />}
       </GoogleMap>
-    </>
+      <div className="legend">
+        <div className="legend-item">
+          <div className="custom-marker-lost">Lost Items</div>
+          {/* <span>Lost Items</span> */}
+        </div>
+        <div className="legend-item">
+          <div className="custom-marker-found">Found Items</div>
+          {/* <span>Found Items</span> */}
+        </div>
+      </div>
+    </div>
   );
 };
 
