@@ -94,7 +94,7 @@ function FormModal({ formType }) {
           </Button>
         </Modal.Footer>
       </Modal>
-      <MapModal show={show} handleClose={handleClose} handleAddLocation={handleAddLocation} />
+      <MapModal show={show} handleClose={handleClose} handleAddLocation={handleAddLocation} itemType={formType.toLowerCase()}  />
     </>
   );
 }
