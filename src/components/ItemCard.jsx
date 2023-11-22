@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Container, Button } from 'react-bootstrap';
+import { Image, Container, Button, Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { deleteItem, fetchData } from '../store/item';
 import EditFormModal from './EditFormModal';
@@ -15,9 +15,13 @@ function ItemCard({ id, type, itemName, description, location, image }) {
     image,
   };
   const [show, setShow] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleDeleteConfirmClose = () => setShowDeleteConfirm(false);
+  const handleDeleteConfirmShow = () => setShowDeleteConfirm(true);
 
   const dispatch = useDispatch();
 
@@ -26,9 +30,15 @@ function ItemCard({ id, type, itemName, description, location, image }) {
     handleShow();
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
+    // Show confirmation modal instead of directly deleting
+    handleDeleteConfirmShow();
+  };
+
+  const confirmDelete = async () => {
     await dispatch(deleteItem(id));
     dispatch(fetchData());
+    handleDeleteConfirmClose();
   };
 
   return (
@@ -65,6 +75,20 @@ function ItemCard({ id, type, itemName, description, location, image }) {
         handleClose={handleClose}
         item={item}
       />
+      <Modal show={showDeleteConfirm} onHide={handleDeleteConfirmClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete {itemName}?</Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleDeleteConfirmClose}>
+            No
+          </Button>
+          <Button variant='danger' onClick={confirmDelete}>
+            Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
