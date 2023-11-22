@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Image, Container, Button, Modal, Accordion, Form } from 'react-bootstrap';
+import { Image, Container, Button, Modal, Dropdown, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteItem, fetchData, showModal, hideModal, addNote} from '../store/item';
 
@@ -22,12 +22,15 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [noteText, setNoteText] = useState('');
   const [showNoteModal, setShowNoteModal] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleDeleteConfirmClose = () => setShowDeleteConfirm(false);
   const handleDeleteConfirmShow = () => setShowDeleteConfirm(true);
+
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   const dispatch = useDispatch();
 
@@ -95,28 +98,39 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
           <Button onClick={() => setShowNoteModal(true)}>Add Notes</Button>
           </div>
         </div>
-        <div className='buttons'>
-        <Accordion defaultActiveKey="0">
-          {notes && notes.map((note, index) => (
-            <Accordion.Item eventKey={index.toString()} key={index}>
-              <Accordion.Header>Note {index + 1}</Accordion.Header>
-              <Accordion.Body>
-                <strong>User: </strong>{note.user}<br />
-                <strong>Text: </strong>{note.text}
-              </Accordion.Body>
-            </Accordion.Item>
-          ))}
-        </Accordion>
-          <Button className='item-buttons' variant='outline-secondary' onClick={handleEdit}>
-            EDIT
-          </Button>
-          <Button
-            className='item-buttons'
-            variant='outline-danger'
-            onClick={handleDelete}
-          >
-            DELETE
-          </Button>
+        <div>
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Alerts
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                {notes && notes.length > 0 ? (
+                  notes.map((note, index) => (
+                    <Dropdown.Item key={index}>
+                      <strong>User: </strong>{note.user}<br />
+                      <strong>Text: </strong>{note.text}
+                    </Dropdown.Item>
+                  ))
+                ) : (
+                  <Dropdown.Item>
+                    <textarea placeholder="No notes available :C"></textarea>
+                  </Dropdown.Item>
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+          <div className='buttons'>
+            <Button className='item-buttons' variant='outline-secondary' onClick={handleEdit}>
+              EDIT
+            </Button>
+            <Button
+              className='item-buttons'
+              variant='outline-danger'
+              onClick={handleDelete}
+            >
+              DELETE
+            </Button>
+          </div>
         </div>
       </Container>
       <EditFormModal
