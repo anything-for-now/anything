@@ -66,6 +66,7 @@ const GoogleMaps = () => {
 
   return (
     <div className="map-container">
+      <div className="map">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={defaultCenter}
@@ -80,13 +81,14 @@ const GoogleMaps = () => {
          />
         ))}
       </GoogleMap>
+      </div>
       <div className="legend">
         <div className="legend-item">
-          <div className="custom-marker-lost">Lost Items</div>
+          <div className="custom-marker-lost">Lost</div>
           {/* <span>Lost Items</span> */}
         </div>
         <div className="legend-item">
-          <div className="custom-marker-found">Found Items</div>
+          <div className="custom-marker-found">Found</div>
           {/* <span>Found Items</span> */}
         </div>
       </div>
