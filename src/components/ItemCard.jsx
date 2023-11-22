@@ -81,31 +81,13 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
         <Image id='item-card-image' src={image} />
         <div className='item-card-body'>
           <div className='item-card-description'>
-            <h2>Lost Item: {itemName}</h2>
+            {/* <h2>Lost Item: {itemName}</h2>
             <p>Last Known Location: {location}</p>
-            <p>Item Description: {description}</p>
+            <p>Item Description: {description}</p> */}
+           <h2>{itemName}</h2>
+           <p className="location">{location}</p>
+          <p className="description">{description}</p>
             <Button onClick={handleShowModal}>Add Notes</Button>
-//             <h2>{itemName}</h2>
-//             <p className="location">{location}</p>
-//             <p className="description">{description}</p>
-
-//             {/* Display notes */}
-//             <ul>
-//               {notes ? notes.map((note, index) => (
-//                 <li key={index}>{note.text}</li>
-//               )) : null}
-//             </ul>
-
-//             {/* Add a note */}
-//             <div>
-//               <input
-//                 type='text'
-//                 placeholder='Add a note...'
-//                 value={noteText}
-//                 onChange={(e) => setNoteText(e.target.value)}
-//               />
-//               <button onClick={handleAddNote}>Add Note</button>
-//             </div>
           </div>
         </div>
         <div className='buttons'>
