@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Container, Button, Modal } from 'react-bootstrap';
+import { Image, Container, Button, Modal, Accordion, Card } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { deleteItem, fetchData } from '../store/item';
 import EditFormModal from './EditFormModal';
@@ -55,8 +55,8 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
         <div className='item-card-body'>
           <div className='item-card-description'>
             <h2>{itemName}</h2>
-            <p>{location}</p>
-            <p>{description}</p>
+            <p className="location">{location}</p>
+            <p className="description">{description}</p>
             {/* Display notes */}
             <ul>
               {notes ? notes.map((note, index) => (

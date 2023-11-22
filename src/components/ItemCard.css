@@ -1,5 +1,6 @@
 #item-card-container {
-  background-image: url('./assets/cool-background.png');
+  background-color: #FFFFFF; 
+  background-image: url('./assets/cool-background.svg');
   background-size: cover; 
   background-repeat: no-repeat; 
   background-position: center; 
@@ -7,7 +8,7 @@
   display: flex;
   justify-content: start;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   position: relative;
   padding: 0;
   box-shadow: rgba(0, 0, 0, 0.392) 0px 10px 36px 0px,
@@ -46,5 +47,27 @@
 
 .item-buttons {
   margin: 1rem 1rem 0 0;
+}
+
+.item-card-description {
+  text-align: start;
+  padding: 1rem 2rem;
+}
+
+.item-card-description h2 {
+  color: #333; 
+  font-size: 1.6rem; 
+  font-weight: 400;
+  margin-bottom: 0.5rem; 
+}
+
+.item-card-description p {
+  color: #555; 
+  font-size: 1.0rem; 
+  margin-bottom: 0.25rem; 
+}
+
+.item-card-description .location {
+  font-style: italic; 
 }
 

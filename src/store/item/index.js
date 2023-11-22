@@ -1,7 +1,7 @@
 'use strict';
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import placeholderImage from '../../../assets/placeholder.png'
+import placeholderImage from '../../../assets/placeholder3.png'
 
 const SERVER_URL = import.meta.env.SERVER_URL || 'http://localhost:3001';
 
