@@ -32,6 +32,7 @@ function FormModal({ formType }) {
     dispatch(formInputChange({ field: 'type', value: itemType }));
     dispatch(addItem());
     dispatch(hideModal());
+    console.log("HERE ARE ADD ITEM SAVE", formType)
 
     const formFieldsToReset = ['itemName', 'location', 'description'];
 

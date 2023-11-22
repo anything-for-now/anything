@@ -10,6 +10,7 @@ import FormModal from './FormModal';
 function Lost() {
   const stateShowModal = useSelector((state) => state.item.showModal);
   const itemsState = useSelector((state) => state.item.items);
+   const userState = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [forceUpdate, setForceUpdate] = useState(false);
 
@@ -29,10 +30,6 @@ function Lost() {
   const handleHideModal = () => {
     dispatch(hideModal());
   };
-
-  const userState = useSelector((state) => state.user);
-
-  console.log('HERES THE USER STATE', userState);
 
   return (
     <>
