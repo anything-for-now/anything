@@ -21,14 +21,10 @@ const ProfileDropdown = () => {
   };
 
   return (
-    <Dropdown className='dropdown-button'>
-   <Dropdown.Toggle variant="" id="dropdown-basic" className="rounded-circle">
-      <img 
-        src={user.picture} 
-        alt="Profile" 
-        className="profile-image-small"
-      />
-    </Dropdown.Toggle>
+    <Dropdown>
+      <Dropdown.Toggle variant="" id="dropdown-basic" className="dropdown-button">
+        Profile
+      </Dropdown.Toggle>
 
       <Dropdown.Menu align="end">
         <div className="dropdown-item-text">
@@ -37,11 +33,10 @@ const ProfileDropdown = () => {
             alt="Profile" 
             className="profile-image"
           />
-          <div>Hello, {user.nickname}</div>
-          <div>Email: {user.email}</div>
+          <div>Current User: {user.email}</div>
         </div>
-        <Dropdown.Divider />
-        <Dropdown.Item as={Link} to="/edit-profile" className="edit-profile">Edit Profile</Dropdown.Item>
+        {/* <Dropdown.Divider />
+        <Dropdown.Item as={Link} to="/edit-profile" className="edit-profile">Show Profile</Dropdown.Item> */}
         <Dropdown.Divider />
         <Dropdown.Item as="button" onClick={handleLogout} className="logout-button">Log out</Dropdown.Item>
       </Dropdown.Menu>

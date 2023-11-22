@@ -40,6 +40,7 @@ function ItemCard({ id, type, itemName, description, location, image }) {
             <h2>{itemName}</h2>
             <p>{location}</p>
             <p>{description}</p>
+
           </div>
           <div>
             <h3>Possible Match Found -- needs work</h3>
