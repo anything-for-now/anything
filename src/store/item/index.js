@@ -6,11 +6,9 @@ const SERVER_URL = import.meta.env.SERVER_URL || 'http://localhost:3001';
 
 export const fetchData = createAsyncThunk(
   'item/fetchData',
-  async (_, { getState }) => {
-    const email = getState().user.user.email;
-    console.log('HERES THE EMAIL', email);
+  async () => {
     try {
-      const response = await axios.get(`${SERVER_URL}/items/${email}`);
+      const response = await axios.get(`${SERVER_URL}/items`);
       console.log('HERES THE FETCH DATA RESPONSE', response);
       return response.data;
     } catch (error) {
