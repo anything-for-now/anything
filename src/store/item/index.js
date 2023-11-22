@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import placeholderImage from '../../../public/images/placeholder3.png';
 
-const SERVER_URL = import.meta.env.SERVER_URL;
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export const fetchData = createAsyncThunk(
   'item/fetchData',
