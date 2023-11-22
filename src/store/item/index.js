@@ -4,15 +4,21 @@ import axios from 'axios';
 
 const SERVER_URL = import.meta.env.SERVER_URL || 'http://localhost:3001';
 
-export const fetchData = createAsyncThunk('item/fetchData', async () => {
-  try {
-    const response = await axios.get(`${SERVER_URL}/items`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    throw error;
+export const fetchData = createAsyncThunk(
+  'item/fetchData',
+  async (_, { getState }) => {
+    const email = getState().user.user.email;
+    console.log('HERES THE EMAIL', email);
+    try {
+      const response = await axios.get(`${SERVER_URL}/items/${email}`);
+      console.log('HERES THE FETCH DATA RESPONSE', response);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error;
+    }
   }
-});
+);
 
 export const editItem = createAsyncThunk(
   'item/editItem',
@@ -44,46 +50,54 @@ export const deleteItem = createAsyncThunk(
 );
 
 // Thunk for uploading an image
-export const uploadFile = createAsyncThunk('item/uploadFile', async (file, { getState }) => {
-  const formData = new FormData();
-  formData.append('file', file);
-  try {
-    const response = await axios.post(`${SERVER_URL}/upload`, formData);
-    if (response.status === 200) {
-      return response.data.imageUrl;
-    } else {
-      throw new Error('Failed to upload file');
+export const uploadFile = createAsyncThunk(
+  'item/uploadFile',
+  async (file, { getState }) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const response = await axios.post(`${SERVER_URL}/upload`, formData);
+      if (response.status === 200) {
+        return response.data.imageUrl;
+      } else {
+        throw new Error('Failed to upload file');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
     }
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    throw error;
   }
-});
+);
 
 // Thunk for adding an item, with or without an image upload
-export const addItem = createAsyncThunk('item/addItem', async (_, { dispatch, getState }) => {
-  const state = getState().item;
+export const addItem = createAsyncThunk(
+  'item/addItem',
+  async (_, { dispatch, getState }) => {
+    const state = getState().item;
+    const email = getState().user.user.email;
 
-  try {
-    let imageUrl = state.formData.image; // Use existing image URL or placeholder
+    try {
+      let imageUrl = state.formData.image; // Use existing image URL or placeholder
 
-    if (state.selectedFile) {
-      imageUrl = await dispatch(uploadFile(state.selectedFile)).unwrap();
+      if (state.selectedFile) {
+        imageUrl = await dispatch(uploadFile(state.selectedFile)).unwrap();
+      }
+
+      const newItemData = {
+        ...state.formData,
+        image: imageUrl,
+        email: email,
+      };
+
+      // Posts the new item data to the server
+      const response = await axios.post(`${SERVER_URL}/items`, newItemData);
+      console.log('Item added successfully:', response.data);
+      dispatch(fetchData());
+    } catch (error) {
+      console.error('Error adding item:', error);
     }
-
-    const newItemData = {
-      ...state.formData,
-      image: imageUrl, 
-    };
-
-    // Posts the new item data to the server
-    const response = await axios.post(`${SERVER_URL}/items`, newItemData);
-    console.log('Item added successfully:', response.data);
-    dispatch(fetchData());
-  } catch (error) {
-    console.error('Error adding item:', error);
   }
-});
+);
 
 export const setEditItemData = createAction('item/setEditItemData');
 
@@ -123,6 +137,8 @@ const itemSlice = createSlice({
         state.formData.image = value;
       } else if (field === 'type') {
         state.formData.type = value;
+      } else if (field === 'email') {
+        state.formData.email = value;
       }
     },
     setEditItemData: (state, action) => {
@@ -150,7 +166,7 @@ const itemSlice = createSlice({
       })
       .addCase(editItem.fulfilled, (state, action) => {
         const updatedItem = action.payload;
-        console.log("HERES THE UPDATE ITEM", updatedItem)
+        console.log('HERES THE UPDATE ITEM', updatedItem);
         // Use map to update or add the item
         state.items = state.items.map((item) =>
           item._id === updatedItem._id ? updatedItem : item
@@ -164,11 +180,7 @@ const itemSlice = createSlice({
   },
 });
 
-export const {
-  showModal,
-  hideModal,
-  fileChange,
-  formInputChange,
-} = itemSlice.actions;
+export const { showModal, hideModal, fileChange, formInputChange } =
+  itemSlice.actions;
 
 export default itemSlice.reducer;

@@ -13,14 +13,10 @@ export const fetchUser = createAsyncThunk(
   async (userData) => {
     // eslint-disable-next-line no-useless-catch
     try {
-      const email = userData.email;
-
-      console.log('HERE THE EMAIL', email);
-
+    
       // Check if the user exists
       const postResponse = await axios.post(`${SERVER_URL}/users`, userData);
 
-      console.log('HERES POST USER DATA', postResponse.data);
       return postResponse.data; // Assuming the server responds with the user data
     } catch (error) {
       throw error;

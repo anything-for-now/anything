@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoadScriptWrapper from './components/LoadScriptWrapper.jsx';
 import GoogleMaps from './components/GoogleMaps.jsx';
 import { withAuth0, useAuth0 } from '@auth0/auth0-react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchUser, setUser } from './store/user';
 import placeholderImage from '../assets/map.png';
 
@@ -29,21 +29,14 @@ function App() {
         };
 
         // Dispatch actions to update Redux store
-        // console.log("HERES THE user", user)
         dispatch(setUser(user));
         dispatch(fetchUser(user))
       } catch (error) {
         console.error('Error fetching Id Token Claims:', error);
-        // Handle errors gracefully (e.g., display an error message)
       }
     };
 
     fetchIdTokenClaims();
-  // }, [dispatch, getIdTokenClaims]);
-
-  // const userState = useSelector((state) => state.user.user);
-
-  // console.log('HERES THE USER STATE', userState);
 
   return (
     <LoadScriptWrapper>
