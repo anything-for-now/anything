@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { withAuth0 } from '@auth0/auth0-react';
 import AuthButtons from '../Auth/AuthButtons';
 import ProfileDropdown from '../Auth/ProfileDropdown';
-import Logo from '../../public/images/lost-hub-logo.png';
+import Logo from '../../images/lost-hub-logo.png';
 import './Header.css';
 
 

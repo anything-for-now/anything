@@ -12,7 +12,7 @@
 }
 
  .container-fluid{
-    background-image: url('./../assets/cool-background-1.png');
+    background-image: url('../../images/cool-background-1.png');
     background-size: cover; /* Cover the entire viewport */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-position: center; 
