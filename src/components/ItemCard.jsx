@@ -18,7 +18,6 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
     image,
     notes,
   };
-  console.log('Notes:', notes);
   const [show, setShow] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [noteText, setNoteText] = useState('');
@@ -49,15 +48,17 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
   };
 
   const handleAddNote = () => {
-    dispatch(addNote({ itemId: id, user: 'current_user', text: noteText }));
+    dispatch(addNote({ itemId: id, user: userEmail, text: noteText }));
     setNoteText('');
     setShowNoteModal(false);
   };
 
   const stateShowModal = useSelector((state) => state.item.showModal);
   const itemsState = useSelector((state) => state.item.items);
-   const userState = useSelector((state) => state.user);
+  const userState = useSelector((state) => state.user);
   const [forceUpdate, setForceUpdate] = useState(false);
+
+  const userEmail = userState.user.email;
 
   useEffect(() => {
     console.log('HERES THE ITEMS STATE:', itemsState);
@@ -88,9 +89,6 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
         <Image id='item-card-image' src={image} />
         <div className='item-card-body'>
           <div className='item-card-description'>
-            {/* <h2>Lost Item: {itemName}</h2>
-            <p>Last Known Location: {location}</p>
-            <p>Item Description: {description}</p> */}
            <h2>{itemName}</h2>
            <p className="location">{location}</p>
           <p className="description">{description}</p>
