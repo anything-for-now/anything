@@ -33,7 +33,7 @@ const ProfileDropdown = () => {
             alt="Profile" 
             className="profile-image"
           />
-          <div>Current User: {user.email}</div>
+          <div className="current-user">Current User: {user.email}</div>
         </div>
         {/* <Dropdown.Divider />
         <Dropdown.Item as={Link} to="/edit-profile" className="edit-profile">Show Profile</Dropdown.Item> */}

@@ -3,13 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  hideModal,
-  fileChange,
-  formInputChange,
-  editItem,
-  uploadFile,
-} from '../store/item';
+import { hideModal, fileChange, formInputChange, editItem, uploadFile } from '../store/item';
 import MapModal from './MapModal';
 import './FormModal.css';
 

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, Container, Button, Modal } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { deleteItem, fetchData } from '../store/item';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteItem, fetchData, showModal, hideModal } from '../store/item';
 import EditFormModal from './EditFormModal';
 import './ItemCard.css';
+import FormModal from './FormModal';
 
 function ItemCard({ id, type, itemName, description, location, image, notes }) {
   const item = {
@@ -48,6 +49,30 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
     setNoteText('');
   };
 
+  // This is bad practice but yeah...
+
+  const stateShowModal = useSelector((state) => state.item.showModal);
+  const itemsState = useSelector((state) => state.item.items);
+   const userState = useSelector((state) => state.user);
+  const [forceUpdate, setForceUpdate] = useState(false);
+
+  useEffect(() => {
+    console.log('HERES THE ITEMS STATE:', itemsState);
+    setForceUpdate((prev) => !prev);
+  }, [itemsState]);
+
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
+
+  const handleShowModal = () => {
+    dispatch(showModal());
+  };
+
+  const handleHideModal = () => {
+    dispatch(hideModal());
+  };
+
   return (
     <>
       <Container id='item-card-container'>
@@ -57,26 +82,11 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
             <h2>Lost Item: {itemName}</h2>
             <p>Last Known Location: {location}</p>
             <p>Item Description: {description}</p>
-            {/* Display notes */}
-            <ul>
-              {notes ? notes.map((note, index) => (
-                <li key={index}>{note.text}</li>
-              )) : null}
-            </ul>
-
-            {/* Add a note */}
-            <div>
-              <input
-                type='text'
-                placeholder='Add a note...'
-                value={noteText}
-                onChange={(e) => setNoteText(e.target.value)}
-              />
-              <button onClick={handleAddNote}>Add Note</button>
-            </div>
+            <Button onClick={handleShowModal}>Add Notes</Button>
           </div>
         </div>
         <div className='buttons'>
+          
           <Button className='item-buttons' variant='outline-secondary' onClick={handleEdit}>
             EDIT
           </Button>
@@ -94,6 +104,11 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
         show={show}
         handleClose={handleClose}
         item={item}
+      />
+      <FormModal
+        formType={'Lost'}
+        showModal={stateShowModal}
+        handleCloseModal={handleHideModal}
       />
       <Modal show={showDeleteConfirm} onHide={handleDeleteConfirmClose}>
         <Modal.Header closeButton>
