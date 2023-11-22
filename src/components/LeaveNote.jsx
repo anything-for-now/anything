@@ -1,110 +1,44 @@
-'use strict';
-
 import React, { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { hideModal, fileChange, formInputChange, addItem } from '../store/item';
-import MapModal from './MapModal';
-import './FormModal.css';
+import { useDispatch } from 'react-redux';
+import { hideModal, addNote } from '../store/item';
 
-function LeaveNoteModal({ formType }) {
-  const showModal = useSelector((state) => state.item.showModal);
-  const formData = useSelector((state) => state.item.formData);
-  const itemsState = useSelector((state) => state.item.items);
+function LeaveNoteModal({ itemId }) {
+  const [noteText, setNoteText] = useState('');
   const dispatch = useDispatch();
 
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const handleFileChange = (e) => {
-    dispatch(fileChange(e.target.files[0]));
-  };
-
-  const handleFormInputChange = (e, field) => {
-    const value = e.target.value;
-    dispatch(formInputChange({ field, value }));
-  };
-
-  const handleSaveChanges = () => {
-    const itemType = formType.toLowerCase();
-    dispatch(formInputChange({ field: 'type', value: itemType }));
-    dispatch(addItem());
+  const handleSaveNote = () => {
+    dispatch(addNote({ itemId, user: 'current_user', text: noteText }));
+    setNoteText('');
     dispatch(hideModal());
-    console.log("HERE ARE ADD ITEM SAVE", formType)
-
-    const formFieldsToReset = ['itemName', 'location', 'description'];
-
-    // Loop through the form fields and dispatch actions to reset them
-    formFieldsToReset.forEach((field) => {
-      dispatch(formInputChange({ field, value: '' }));
-    });
   };
-
-  const handleAddLocation = (address) => {
-    dispatch(formInputChange({ field: 'location', value: address }));
-  }
 
   return (
-    <>
-      <Modal show={showModal} onHide={() => dispatch(hideModal())}>
-        <Modal.Header closeButton>
-          <Modal.Title>{formType} Found Item </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
-            <Form.Label>Item Name</Form.Label>
-            <Form.Control
-              type='text'
-              placeholder='// Wallet'
-              value={formData.itemName}
-              onChange={(e) => handleFormInputChange(e, 'itemName')}
-            />
-          </Form.Group>
-          <Form.Group controlId='formFile' className='mb-3'>
-            <Form.Label>Image</Form.Label>
-            <Form.Control type='file' onChange={handleFileChange} />
-          </Form.Group>
-
-          <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
-            <Form.Label>Location</Form.Label>
-            <div className='d-flex'>
-              <Form.Control
-                type='text'
-                value={formData.location}
-                placeholder='123 Street, Seattle, WA 98101'
-                onChange={(e) => handleFormInputChange(e, 'location')}
-                className="me-2" 
-              />
-              <Button variant='secondary'  className='d-flex  flex-row' onClick={handleShow}>
-                Open Map
-              </Button>
-            </div>
-          </Form.Group>
-
-          <Form.Group controlId='description'>
-            <Form.Label>Leave a note:</Form.Label>
-            <Form.Control
-              as='textarea'
-              rows={3}
-              placeholder='Provide a detailed description of the item...'
-              value={formData.description}
-              onChange={(e) => handleFormInputChange(e, 'description')}
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant='secondary' onClick={() => dispatch(hideModal())}>
-            Close
-          </Button>
-          <Button variant='primary' onClick={handleSaveChanges}>
-            Submit Item Found
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      <MapModal show={show} handleClose={handleClose} handleAddLocation={handleAddLocation} itemType={formType.toLowerCase()}  />
-    </>
+    <Modal show onHide={() => dispatch(hideModal())}>
+      <Modal.Header closeButton>
+        <Modal.Title>Leave a Note</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form.Group controlId='noteText'>
+          <Form.Label>Note:</Form.Label>
+          <Form.Control
+            as='textarea'
+            rows={3}
+            placeholder='Enter your note here...'
+            value={noteText}
+            onChange={(e) => setNoteText(e.target.value)}
+          />
+        </Form.Group>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant='secondary' onClick={() => dispatch(hideModal())}>
+          Close
+        </Button>
+        <Button variant='primary' onClick={handleSaveNote}>
+          Submit Note
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 
