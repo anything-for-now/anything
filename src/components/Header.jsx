@@ -6,15 +6,20 @@ import AuthButtons from '../Auth/AuthButtons';
 import ProfileDropdown from '../Auth/ProfileDropdown';
 import './Header.css';
 
-
 const Header = () => {
-
   return (
     <>
       <Navbar fixed='top' expand='lg' className='bg-body-tertiary header'>
         <Container fluid>
           <Navbar.Brand href='/' id='brand-name'>
-          <img id='logo' src='../../public/images/lost-hub-logo.png' />
+            <img
+              // id='logo'
+              width='50'
+              height='30'
+              src='../../public/images/lost-hub-logo.png'
+              className='d-inline-block align-top'
+              alt='lost hub logo'
+            />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
@@ -27,7 +32,7 @@ const Header = () => {
               </Link>
             </Nav>
           </Navbar.Collapse>
-          <ProfileDropdown/>
+          <ProfileDropdown />
           <AuthButtons />
         </Container>
       </Navbar>
