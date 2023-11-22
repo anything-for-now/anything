@@ -98,6 +98,20 @@ export const addItem = createAsyncThunk(
   }
 );
 
+export const addNote = createAsyncThunk(
+  'item/addNote',
+  async ({ itemId, user, text }) => { 
+    try {
+      const response = await axios.post(`${SERVER_URL}/items/${itemId}/notes`, { user, text });
+      return response.data; 
+    } catch (error) {
+      console.error('Error adding note:', error);
+      throw error;
+    }
+  }
+);
+
+
 export const setEditItemData = createAction('item/setEditItemData');
 
 const itemSlice = createSlice({
@@ -112,6 +126,7 @@ const itemSlice = createSlice({
       image: placeholderImage,
       location: '',
       description: '',
+      notes: []
     },
   },
   reducers: {
@@ -138,7 +153,7 @@ const itemSlice = createSlice({
         state.formData.type = value;
       } else if (field === 'email') {
         state.formData.email = value;
-      }
+      } 
     },
     setEditItemData: (state, action) => {
       // Set the item data in the state for pre-populating the form
@@ -171,11 +186,17 @@ const itemSlice = createSlice({
           item._id === updatedItem._id ? updatedItem : item
         );
       })
-
       .addCase(deleteItem.fulfilled, (state, action) => {
         const itemIdToDelete = action.payload;
         state.items = state.items.filter((item) => item.id !== itemIdToDelete);
-      });
+      })
+      .addCase(addNote.fulfilled, (state, action) => {
+        const updatedItem = action.payload;
+        // Use map to update the item with the new note
+        state.items = state.items.map((item) =>
+          item._id === updatedItem._id ? updatedItem : item
+        );
+      })
   },
 });
 

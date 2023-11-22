@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Image, Container, Button, Modal } from 'react-bootstrap';
+import { Image, Container, Button, Modal, Accordion, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteItem, fetchData, showModal, hideModal } from '../store/item';
+import { deleteItem, fetchData, showModal, hideModal, addNote} from '../store/item';
 
 import EditFormModal from './EditFormModal';
 import './ItemCard.css';
@@ -18,9 +18,11 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
     image,
     notes,
   };
+  console.log('Notes:', notes);
   const [show, setShow] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [noteText, setNoteText] = useState('');
+  const [showNoteModal, setShowNoteModal] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -47,11 +49,10 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
   };
 
   const handleAddNote = () => {
-    dispatch(addNote({ itemId: id, noteText, user: 'current_user' }));
+    dispatch(addNote({ itemId: id, user: 'current_user', text: noteText }));
     setNoteText('');
+    setShowNoteModal(false);
   };
-
-  // This is bad practice but yeah...
 
   const stateShowModal = useSelector((state) => state.item.showModal);
   const itemsState = useSelector((state) => state.item.items);
@@ -65,6 +66,7 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
 
   useEffect(() => {
     dispatch(fetchData());
+    
   }, [dispatch]);
 
   const handleShowModal = () => {
@@ -73,6 +75,11 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
 
   const handleHideModal = () => {
     dispatch(hideModal());
+  };
+
+  const handleShowNoteModal = () => {
+
+    dispatch(showModal({ type: 'note', itemId: id }));
   };
 
   return (
@@ -87,11 +94,21 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
            <h2>{itemName}</h2>
            <p className="location">{location}</p>
           <p className="description">{description}</p>
-            <Button onClick={handleShowModal}>Add Notes</Button>
+          <Button onClick={() => setShowNoteModal(true)}>Add Notes</Button>
           </div>
         </div>
         <div className='buttons'>
-          
+        <Accordion defaultActiveKey="0">
+          {notes && notes.map((note, index) => (
+            <Accordion.Item eventKey={index.toString()} key={index}>
+              <Accordion.Header>Note {index + 1}</Accordion.Header>
+              <Accordion.Body>
+                <strong>User: </strong>{note.user}<br />
+                <strong>Text: </strong>{note.text}
+              </Accordion.Body>
+            </Accordion.Item>
+          ))}
+        </Accordion>
           <Button className='item-buttons' variant='outline-secondary' onClick={handleEdit}>
             EDIT
           </Button>
@@ -126,6 +143,32 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
           </Button>
           <Button variant='danger' onClick={confirmDelete}> 
             Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showNoteModal} onHide={() => setShowNoteModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Leave a Note</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId='noteText'>
+            <Form.Label>Note:</Form.Label>
+            <Form.Control
+              as='textarea'
+              rows={3}
+              placeholder='Enter your note here...'
+              value={noteText}
+              onChange={(e) => setNoteText(e.target.value)}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={() => setShowNoteModal(false)}>
+            Close
+          </Button>
+          <Button variant='primary' onClick={handleAddNote}>
+            Submit Note
           </Button>
         </Modal.Footer>
       </Modal>
