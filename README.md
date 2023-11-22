@@ -30,7 +30,7 @@ To get the LostHub frontend up and running on your machine, follow these instruc
 7. **Access the Application**: Open your web browser and go to the provided URL (typically `http://localhost:5137`).
 
 ## Domain Modeling
-![Domain Modeling](./assets/domain-modeling.png)
+![Domain Modeling]()
 
 ## Project Management Board
 
