@@ -39,30 +39,33 @@ function Lost() {
 
   return (
     <>
-
       {currentItems.map((item, index) => (
         <ItemCard
-        key={index}
-        id={item._id}
-        type={item.type}
-        itemName={item.itemName}
-        image={item.image}
-        location={item.location}
-        description={item.description}
+          key={index}
+          id={item._id}
+          type={item.type}
+          itemName={item.itemName}
+          image={item.image}
+          location={item.location}
+          description={item.description}
+          notes={item.notes}
         />
-        ))}
-        <Button onClick={handleShowModal}>+ Lost Item</Button>
-      <div className="pagination-container">
-      <Pagination >
-        {Array.from({ length: totalPages }, (_, index) => (
-          <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
-            {index + 1}
-          </Pagination.Item>
-        ))}
-      </Pagination>
+      ))}
+      <Button onClick={handleShowModal}>+ Lost Item</Button>
+      <div className='pagination-container'>
+        <Pagination>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <Pagination.Item
+              key={index + 1}
+              active={index + 1 === currentPage}
+              onClick={() => paginate(index + 1)}
+            >
+              {index + 1}
+            </Pagination.Item>
+          ))}
+        </Pagination>
       </div>
-      
-      
+
       <FormModal
         formType={'Lost'}
         showModal={stateShowModal}

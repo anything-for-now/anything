@@ -82,7 +82,6 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
   };
 
   const handleShowNoteModal = () => {
-
     dispatch(showModal({ type: 'note', itemId: id }));
   };
 
