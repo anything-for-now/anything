@@ -1,7 +1,6 @@
 'use strict';
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import placeholderImage from '../../../public/images/placeholder3.png';
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -164,7 +163,7 @@ const itemSlice = createSlice({
     formData: {
       type: '',
       itemName: '',
-      image: placeholderImage,
+      image: '../../../public/images/placeholder3.png',
       location: '',
       description: '',
       notes: [],
