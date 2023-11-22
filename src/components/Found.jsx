@@ -48,20 +48,24 @@ function Found() {
           image={item.image}
           location={item.location}
           description={item.description}
+          notes={item.notes}
         />
       ))}
 
-          <Button onClick={handleShowModal}>+ Found Item</Button>
-      <div className="pagination-container">
+      <Button onClick={handleShowModal}>+ Found Item</Button>
+      <div className='pagination-container'>
         <Pagination>
           {Array.from({ length: totalPages }, (_, index) => (
-            <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
+            <Pagination.Item
+              key={index + 1}
+              active={index + 1 === currentPage}
+              onClick={() => paginate(index + 1)}
+            >
               {index + 1}
             </Pagination.Item>
           ))}
         </Pagination>
       </div>
-
 
       <FormModal
         formType={'Found'}
