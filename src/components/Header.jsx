@@ -14,6 +14,8 @@ const Header = () => {
           <Navbar.Brand href='/' id='brand-name'>
             <img
               id='logo'
+              height= '50'
+              width= '50'
               src='/images/lost-hub-logo.png'
               alt='lost hub logo'
             />
