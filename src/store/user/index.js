@@ -5,7 +5,7 @@ const initialState = {
   user: null,
 };
 
-const SERVER_URL = import.meta.env.SERVER_URL || 'http://localhost:3001';
+const SERVER_URL = import.meta.env.SERVER_URL;
 
 // Async thunk for checking if the user exists in the database
 export const fetchUser = createAsyncThunk(

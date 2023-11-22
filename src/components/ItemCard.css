@@ -1,6 +1,6 @@
 #item-card-container {
   background-color: #FFFFFF; 
-  background-image: url('./assets/cool-background.svg');
+  background-image: url('../../public/images/cool-background.svg');
   background-size: cover; 
   background-repeat: no-repeat; 
   background-position: center; 
