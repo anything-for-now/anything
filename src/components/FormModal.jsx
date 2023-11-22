@@ -69,15 +69,16 @@ function FormModal({ formType }) {
 
           <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
             <Form.Label>Location</Form.Label>
-            <div className='location-container'>
+            <div className='d-flex'>
               <Form.Control
                 type='text'
                 value={formData.location}
-                placeholder='// 123 Street, Seattle, WA 98101'
+                placeholder='123 Street, Seattle, WA 98101'
                 onChange={(e) => handleFormInputChange(e, 'location')}
+                className="me-2" 
               />
-              <Button variant='secondary' onClick={handleShow}>
-                Choose on Map
+              <Button variant='secondary'  className='d-flex  flex-row' onClick={handleShow}>
+                Open Map
               </Button>
             </div>
           </Form.Group>

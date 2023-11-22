@@ -93,15 +93,16 @@ function EditFormModal({ formType, show, handleClose, item }) {
 
           <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
             <Form.Label>Location</Form.Label>
-            <div className='location-container'>
+            <div className='d-flex'>
               <Form.Control
                 type='text'
                 name='location'
                 value={formValues.location}
                 onChange={handleInputChange}
+                className="me-2"
               />
               <Button variant='secondary' onClick={handleMapShow}>
-                Choose on Map
+                Open Map
               </Button>
             </div>
           </Form.Group>

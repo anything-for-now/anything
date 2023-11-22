@@ -45,11 +45,7 @@ function App() {
               exact
               path='/'
               element={
-                isAuthenticated ? (
                   <GoogleMaps />
-                ) : (
-                  <img src={placeholderImage} alt='Map Placeholder' />
-                )
               }
             />
             <Route
