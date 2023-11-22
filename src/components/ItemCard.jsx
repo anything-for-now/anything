@@ -77,12 +77,12 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
           </div>
         </div>
         <div className='buttons'>
-          <Button className='item-buttons' variant='info' onClick={handleEdit}>
+          <Button className='item-buttons' variant='outline-secondary' onClick={handleEdit}>
             EDIT
           </Button>
           <Button
             className='item-buttons'
-            variant='danger'
+            variant='outline-danger'
             onClick={handleDelete}
           >
             DELETE
