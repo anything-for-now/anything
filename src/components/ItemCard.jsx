@@ -51,7 +51,7 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
   };
 
   const handleAddNote = () => {
-    dispatch(addNote({ itemId: id, user: userEmail, text: noteText }));
+    dispatch(addNote({ itemId: id, user: userEmail, text: noteText, notes }));
     setNoteText('');
     setShowNoteModal(false);
   };

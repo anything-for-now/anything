@@ -100,22 +100,60 @@ export const addItem = createAsyncThunk(
 
 export const addNote = createAsyncThunk(
   'item/addNote',
-  async ({ itemId, user, text }) => { 
-    const newUser = user.split('@');
-    const updatedUser = newUser[0];
-    user = updatedUser;
-    try {
-      const response = await axios.post(`${SERVER_URL}/items/${itemId}/notes`, { user, text });
-      return response.data; 
-    } catch (error) {
-      console.error('Error adding note:', error);
-      throw error;
+  async ({ itemId, user, text, notes }, { getState, dispatch }) => {
+    const state = getState().item;
+
+    // Find the item in the current state
+    const currentItem = state.items.find((item) => item._id === itemId);
+
+    if (currentItem) {
+      // Create a copy of the item with the updated notes
+      const updatedItem = {
+        ...currentItem,
+        notes: [
+          ...currentItem.notes,
+          {
+            user,
+            text,
+          },
+        ],
+      };
+
+      // Dispatch an action to update the item in the Redux store
+      dispatch(updateItem(updatedItem));
+
+      // Modify the 'user' variable if needed
+      const newUser = user.split('@');
+      const updatedUser = newUser[0];
+      user = updatedUser;
+
+      try {
+        // Send the modified data to the server
+        const response = await axios.post(
+          `${SERVER_URL}/items/${itemId}/notes`,
+          {
+            user,
+            text,
+          }
+        );
+
+        // Return the updated notes data
+        return { itemId, notes, response: response.data };
+      } catch (error) {
+        console.error('Error adding note:', error);
+        throw error;
+      }
+    } else {
+      console.error(`Item with ID ${itemId} not found in the current state.`);
+      throw new Error('Item not found');
     }
   }
 );
 
 
 export const setEditItemData = createAction('item/setEditItemData');
+
+export const updateItem = createAction('item/updateItem');
 
 const itemSlice = createSlice({
   name: 'item',
@@ -129,7 +167,7 @@ const itemSlice = createSlice({
       image: placeholderImage,
       location: '',
       description: '',
-      notes: []
+      notes: [],
     },
   },
   reducers: {
@@ -156,7 +194,7 @@ const itemSlice = createSlice({
         state.formData.type = value;
       } else if (field === 'email') {
         state.formData.email = value;
-      } 
+      }
     },
     setEditItemData: (state, action) => {
       // Set the item data in the state for pre-populating the form
@@ -168,6 +206,16 @@ const itemSlice = createSlice({
         location,
         description,
       };
+    },
+    updateItem: (state, action) => {
+      const updatedItem = action.payload;
+      // Find the index of the item in the state and replace it
+      const index = state.items.findIndex(
+        (item) => item._id === updatedItem._id
+      );
+      if (index !== -1) {
+        state.items[index] = updatedItem;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -199,7 +247,7 @@ const itemSlice = createSlice({
         state.items = state.items.map((item) =>
           item._id === updatedItem._id ? updatedItem : item
         );
-      })
+      });
   },
 });
 
