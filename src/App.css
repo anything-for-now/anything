@@ -13,14 +13,14 @@ html, body {
 }
 
 body {
-  background-image: url('../assets/images/cool-background.png');
+  background-image: url('../images/cool-background.png');
   background-size: cover; 
   /* background-repeat: no-repeat;  */
   background-position: center;
 }
 
 header {
-  background-image: url('../assets/images/cool-background-1.png');
+  background-image: url('../images/cool-background-1.png');
   background-size: cover; 
   background-repeat: no-repeat; 
   background-position: center; 
