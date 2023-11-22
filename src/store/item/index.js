@@ -163,7 +163,7 @@ const itemSlice = createSlice({
     formData: {
       type: '',
       itemName: '',
-      image: '../../../public/images/placeholder3.png',
+      image: '/images/placeholder3.png',
       location: '',
       description: '',
       notes: [],
