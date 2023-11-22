@@ -54,9 +54,9 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
         <Image id='item-card-image' src={image} />
         <div className='item-card-body'>
           <div className='item-card-description'>
-            <h2>{itemName}</h2>
-            <p>{location}</p>
-            <p>{description}</p>
+            <h2>Lost Item: {itemName}</h2>
+            <p>Last Known Location: {location}</p>
+            <p>Item Description: {description}</p>
             {/* Display notes */}
             <ul>
               {notes ? notes.map((note, index) => (
@@ -97,14 +97,14 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
       />
       <Modal show={showDeleteConfirm} onHide={handleDeleteConfirmClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Deletion</Modal.Title>
+          <Modal.Title className='you-sure-modal'>Confirm Deletion</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to delete {itemName}?</Modal.Body>
+        <Modal.Body className='you-sure-modal'>Are you sure you want to delete {itemName}?</Modal.Body>
         <Modal.Footer>
           <Button variant='secondary' onClick={handleDeleteConfirmClose}>
             No
           </Button>
-          <Button variant='danger' onClick={confirmDelete}>
+          <Button variant='danger' onClick={confirmDelete}> 
             Yes
           </Button>
         </Modal.Footer>
