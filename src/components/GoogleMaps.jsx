@@ -65,34 +65,39 @@ const GoogleMaps = () => {
   }, [items]); 
 
   return (
-    <div className="map-container">
-      <div className="map">
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={defaultCenter}
-        zoom={8}
-      >
-        {markers.map((marker, idx) => (
-           <CustomMarker
-           key={idx}
-           text={marker.text}
-           position={{ lat: marker.lat, lng: marker.lng }}
-           type={marker.type} 
-         />
-        ))}
-      </GoogleMap>
-      </div>
-      <div className="legend">
-        <div className="legend-item">
-          <div className="custom-marker-lost">Lost</div>
-          {/* <span>Lost Items</span> */}
+    <>
+      <h1 className='app-header1'>
+        Lost Hub
+      </h1>
+      <div className="map-container">
+        <div className="map">
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={defaultCenter}
+          zoom={8}
+        >
+          {markers.map((marker, idx) => (
+            <CustomMarker
+            key={idx}
+            text={marker.text}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            type={marker.type} 
+          />
+          ))}
+        </GoogleMap>
         </div>
-        <div className="legend-item">
-          <div className="custom-marker-found">Found</div>
-          {/* <span>Found Items</span> */}
+        <div className="legend">
+          <div className="legend-item">
+            <div className="custom-marker-lost">Lost</div>
+            {/* <span>Lost Items</span> */}
+          </div>
+          <div className="legend-item">
+            <div className="custom-marker-found">Found</div>
+            {/* <span>Found Items</span> */}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
