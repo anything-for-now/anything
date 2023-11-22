@@ -36,6 +36,16 @@
   margin-bottom: 10px;
 }
 
+.current-user{
+  font-weight: bolder;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.logout-button{
+  font-weight: bolder;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .dropdown-item-text{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -46,3 +56,4 @@
 .logout-button{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+https://i.ibb.co/F01hL3Y/imresizer-1700627245217.jpg

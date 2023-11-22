@@ -7,7 +7,7 @@ import { hideModal, fileChange, formInputChange, addItem } from '../store/item';
 import MapModal from './MapModal';
 import './FormModal.css';
 
-function FormModal({ formType }) {
+function LeaveNoteModal({ formType }) {
   const showModal = useSelector((state) => state.item.showModal);
   const formData = useSelector((state) => state.item.formData);
   const itemsState = useSelector((state) => state.item.items);
@@ -50,7 +50,7 @@ function FormModal({ formType }) {
     <>
       <Modal show={showModal} onHide={() => dispatch(hideModal())}>
         <Modal.Header closeButton>
-          <Modal.Title>{formType} Item Form</Modal.Title>
+          <Modal.Title>{formType} Found Item </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
@@ -84,7 +84,7 @@ function FormModal({ formType }) {
           </Form.Group>
 
           <Form.Group controlId='description'>
-            <Form.Label>Description</Form.Label>
+            <Form.Label>Leave a note:</Form.Label>
             <Form.Control
               as='textarea'
               rows={3}
@@ -99,7 +99,7 @@ function FormModal({ formType }) {
             Close
           </Button>
           <Button variant='primary' onClick={handleSaveChanges}>
-            Submit Item
+            Submit Item Found
           </Button>
         </Modal.Footer>
       </Modal>
@@ -108,4 +108,4 @@ function FormModal({ formType }) {
   );
 }
 
-export default FormModal;
+export default LeaveNoteModal;
