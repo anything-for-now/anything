@@ -12,7 +12,6 @@ import GoogleMaps from './components/GoogleMaps.jsx';
 import { withAuth0, useAuth0 } from '@auth0/auth0-react';
 import { useDispatch } from 'react-redux';
 import { fetchUser, setUser } from './store/user';
-import placeholderImage from '../assets/map.png';
 
 function App() {
   const dispatch = useDispatch();
