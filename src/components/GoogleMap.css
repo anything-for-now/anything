@@ -3,6 +3,7 @@
   width: 800px; 
   height: calc(400px + 40px); 
   margin: auto; 
+  margin-top: 5rem;
 }
   
   .custom-marker-found {
