@@ -91,33 +91,35 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
         <Image id='item-card-image' src={image} />
         <div className='item-card-body'>
           <div className='item-card-description'>
+            <div className='item-card-info'>
            <h2>{itemName}</h2>
            <p className="location">{location}</p>
           <p className="description">{description}</p>
+          </div>
           <Button onClick={() => setShowNoteModal(true)}>Add Notes</Button>
+          <Dropdown  id='dropdown-container'>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">
+            Alerts
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu className="sticky-note-dropdown">
+            {notes && notes.length > 0 ? (
+              notes.map((note, index) => (
+                <Dropdown.Item key={index} className="sticky-note-dropdown-item">
+                  <strong>User: </strong>{note.user}<br />
+                  <strong>Text: </strong>{note.text}
+                </Dropdown.Item>
+              ))
+            ) : (
+              <Dropdown.Item className="sticky-note-dropdown-item">
+                No notes available :C
+              </Dropdown.Item>
+            )}
+          </Dropdown.Menu>
+        </Dropdown>
           </div>
         </div>
         <div>
-            <Dropdown>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Alerts
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                {notes && notes.length > 0 ? (
-                  notes.map((note, index) => (
-                    <Dropdown.Item key={index}>
-                      <strong>User: </strong>{note.user}<br />
-                      <strong>Text: </strong>{note.text}
-                    </Dropdown.Item>
-                  ))
-                ) : (
-                  <Dropdown.Item>
-                    <textarea placeholder="No notes available :C"></textarea>
-                  </Dropdown.Item>
-                )}
-              </Dropdown.Menu>
-            </Dropdown>
           <div className='buttons'>
             <Button className='item-buttons' variant='outline-secondary' onClick={handleEdit}>
               EDIT
@@ -129,6 +131,7 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
             >
               DELETE
             </Button>
+            
           </div>
         </div>
       </Container>

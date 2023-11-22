@@ -1,6 +1,6 @@
 #item-card-container {
   background-color: #FFFFFF; 
-  background-image: url('./assets/cool-background.svg');
+  background-image: url('../assets/cool-background.svg'); /* Updated relative path */
   background-size: cover; 
   background-repeat: no-repeat; 
   background-position: center; 
@@ -30,6 +30,13 @@
   text-align: start;
 }
 
+.item-card-info {
+  background-color: #ffffffb9;
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
 .item-card-body {
   width: 100%;
   display: flex;
@@ -51,12 +58,12 @@
 
 .item-card-description {
   text-align: start;
-  padding: 1rem 2rem;
+  /* padding: 1rem 2rem; */
 }
 
 .item-card-description h2 {
   color: #333; 
-  font-size: 1.6rem; 
+  font-size: 1.7rem; 
   font-weight: 400;
   margin-bottom: 0.5rem; 
 }
@@ -70,10 +77,20 @@
 .item-card-description .location {
   font-style: italic; 
 }
+.sticky-note-dropdown {
+  background-color: #fffa65; /* Yellow color */
+  font-family: 'Comic Sans MS', cursive; /* Stylistic font choice */
+  font-size: 0.9rem; /* Adjust as necessary */
+  color: #333; /* Text color */
+  border: 1px solid #ffd700; /* Border to mimic sticky note edge */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transform: rotate(-3deg); /* Tilted angle */
+  border-radius: 4px; /* Slightly rounded corners for a paper-like effect */
+  padding: 10px; /* Space inside the sticky note */
+  max-height: 300px; /* Maximum height before scrolling */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+}
 
-
-/* .you-sure-modal{
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: large;
-} */
-
+#dropdown-container {
+  margin-top: 5px;
+}
