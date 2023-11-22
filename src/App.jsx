@@ -18,25 +18,41 @@ function App() {
   const dispatch = useDispatch();
   const { getIdTokenClaims, isAuthenticated } = useAuth0();
 
-  // useEffect(() => {
-    const fetchIdTokenClaims = async () => {
-      try {
-        const idTokenClaims = await getIdTokenClaims();
-        // Extract user info from idTokenClaims
-        const user = {
-          email: idTokenClaims.email,
-          nickname: idTokenClaims.nickname,
-        };
-
-        // Dispatch actions to update Redux store
-        dispatch(setUser(user));
-        dispatch(fetchUser(user))
-      } catch (error) {
-        console.error('Error fetching Id Token Claims:', error);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchIdTokenClaims = async () => {
+    try {
+      if (!getIdTokenClaims) {
+        console.warn('getIdTokenClaims is not available yet');
+        return;
       }
-    };
 
+      const idTokenClaims = await getIdTokenClaims();
+
+      if (!idTokenClaims || !idTokenClaims.email) {
+        console.warn('Id Token Claims or email is undefined');
+        return;
+      }
+
+      const user = {
+        email: idTokenClaims.email,
+        nickname: idTokenClaims.nickname,
+      };
+
+      dispatch(setUser(user));
+      dispatch(fetchUser(user));
+    } catch (error) {
+      console.error('Error fetching Id Token Claims:', error);
+    }
+  };
+
+  useEffect(() => {
     fetchIdTokenClaims();
+  }, [getIdTokenClaims, dispatch, fetchIdTokenClaims]);
+
+  if (!isAuthenticated) {
+    // You might want to return a loading state or a login component here
+    return <div>Loading...</div>;
+  }
 
   return (
     <LoadScriptWrapper>
@@ -44,10 +60,17 @@ function App() {
         <Router>
           <Header />
           <Routes>
-            <Route 
-            exact 
-            path='/'
-            element={isAuthenticated ? <GoogleMaps /> : <img src={placeholderImage} alt="Map Placeholder" />} />
+            <Route
+              exact
+              path='/'
+              element={
+                isAuthenticated ? (
+                  <GoogleMaps />
+                ) : (
+                  <img src={placeholderImage} alt='Map Placeholder' />
+                )
+              }
+            />
             <Route
               exact
               path='/lost'
