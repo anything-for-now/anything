@@ -53,7 +53,7 @@ LostHub is licensed under the [MIT License](./LICENSE). Feel free to use, modify
 
 ## Support
 
-For any issues or questions, please [open a new issue](https://github.com/lost-hub-app/lost-hub-backend/issues) on GitHub. We appreciate your feedback!
+For any issues or questions, please [open a new issue](https://github.com/lost-hub-app/lost-hub-frontend/issues) on GitHub. We appreciate your feedback!
 
 ## Acknowledgments
 
