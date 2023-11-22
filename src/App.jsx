@@ -17,43 +17,24 @@ import placeholderImage from '../assets/map.png';
 function App() {
   const dispatch = useDispatch();
   const { getIdTokenClaims, isAuthenticated } = useAuth0();
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // useEffect(() => {
   const fetchIdTokenClaims = async () => {
     try {
-      if (!getIdTokenClaims) {
-        console.warn('getIdTokenClaims is not available yet');
-        return;
-      }
-
       const idTokenClaims = await getIdTokenClaims();
-
-      if (!idTokenClaims || !idTokenClaims.email) {
-        console.warn('Id Token Claims or email is undefined');
-        return;
-      }
-
+      // Extract user info from idTokenClaims
       const user = {
         email: idTokenClaims.email,
         nickname: idTokenClaims.nickname,
       };
-
+      // Dispatch actions to update Redux store
       dispatch(setUser(user));
       dispatch(fetchUser(user));
     } catch (error) {
       console.error('Error fetching Id Token Claims:', error);
     }
   };
-
-  useEffect(() => {
-    fetchIdTokenClaims();
-  }, [getIdTokenClaims, dispatch, fetchIdTokenClaims]);
-
-  if (!isAuthenticated) {
-    // You might want to return a loading state or a login component here
-    return <div>Loading...</div>;
-  }
-
+  fetchIdTokenClaims();
+  
   return (
     <LoadScriptWrapper>
       <div id='root'>
@@ -93,5 +74,4 @@ function App() {
     </LoadScriptWrapper>
   );
 }
-
 export default withAuth0(App);
