@@ -102,6 +102,12 @@ export const addNote = createAsyncThunk(
   async ({ itemId, user, text, notes }, { getState, dispatch }) => {
     const state = getState().item;
 
+    // Modify the 'user' variable if needed
+    const newUser = user.split('@');
+    const updatedUser = newUser[0];
+    user = updatedUser;
+    
+
     // Find the item in the current state
     const currentItem = state.items.find((item) => item._id === itemId);
 
@@ -121,10 +127,6 @@ export const addNote = createAsyncThunk(
       // Dispatch an action to update the item in the Redux store
       dispatch(updateItem(updatedItem));
 
-      // Modify the 'user' variable if needed
-      const newUser = user.split('@');
-      const updatedUser = newUser[0];
-      user = updatedUser;
 
       try {
         // Send the modified data to the server
