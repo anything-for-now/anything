@@ -101,6 +101,9 @@ export const addItem = createAsyncThunk(
 export const addNote = createAsyncThunk(
   'item/addNote',
   async ({ itemId, user, text }) => { 
+    const newUser = user.split('@');
+    const updatedUser = newUser[0];
+    user = updatedUser;
     try {
       const response = await axios.post(`${SERVER_URL}/items/${itemId}/notes`, { user, text });
       return response.data; 
