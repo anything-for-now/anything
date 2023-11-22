@@ -5,7 +5,7 @@ import { deleteItem, fetchData } from '../store/item';
 import EditFormModal from './EditFormModal';
 import './ItemCard.css';
 
-function ItemCard({ id, type, itemName, description, location, image }) {
+function ItemCard({ id, type, itemName, description, location, image, notes }) {
   const item = {
     id,
     type,
@@ -13,9 +13,11 @@ function ItemCard({ id, type, itemName, description, location, image }) {
     description,
     location,
     image,
+    notes,
   };
   const [show, setShow] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [noteText, setNoteText] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -41,6 +43,11 @@ function ItemCard({ id, type, itemName, description, location, image }) {
     handleDeleteConfirmClose();
   };
 
+  const handleAddNote = () => {
+    dispatch(addNote({ itemId: id, noteText, user: 'current_user' }));
+    setNoteText('');
+  };
+
   return (
     <>
       <Container id='item-card-container'>
@@ -50,10 +57,23 @@ function ItemCard({ id, type, itemName, description, location, image }) {
             <h2>{itemName}</h2>
             <p>{location}</p>
             <p>{description}</p>
+            {/* Display notes */}
+            <ul>
+              {notes ? notes.map((note, index) => (
+                <li key={index}>{note.text}</li>
+              )) : null}
+            </ul>
 
-          </div>
-          <div>
-            <h3>Possible Match Found -- needs work</h3>
+            {/* Add a note */}
+            <div>
+              <input
+                type='text'
+                placeholder='Add a note...'
+                value={noteText}
+                onChange={(e) => setNoteText(e.target.value)}
+              />
+              <button onClick={handleAddNote}>Add Note</button>
+            </div>
           </div>
         </div>
         <div className='buttons'>

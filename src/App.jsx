@@ -17,37 +17,41 @@ import placeholderImage from '../assets/map.png';
 function App() {
   const dispatch = useDispatch();
   const { getIdTokenClaims, isAuthenticated } = useAuth0();
-
   // useEffect(() => {
-    const fetchIdTokenClaims = async () => {
-      try {
-        const idTokenClaims = await getIdTokenClaims();
-        // Extract user info from idTokenClaims
-        const user = {
-          email: idTokenClaims.email,
-          nickname: idTokenClaims.nickname,
-        };
-
-        // Dispatch actions to update Redux store
-        dispatch(setUser(user));
-        dispatch(fetchUser(user))
-      } catch (error) {
-        console.error('Error fetching Id Token Claims:', error);
-      }
-    };
-
-    fetchIdTokenClaims();
-
+  const fetchIdTokenClaims = async () => {
+    try {
+      const idTokenClaims = await getIdTokenClaims();
+      // Extract user info from idTokenClaims
+      const user = {
+        email: idTokenClaims.email,
+        nickname: idTokenClaims.nickname,
+      };
+      // Dispatch actions to update Redux store
+      dispatch(setUser(user));
+      dispatch(fetchUser(user));
+    } catch (error) {
+      console.error('Error fetching Id Token Claims:', error);
+    }
+  };
+  fetchIdTokenClaims();
+  
   return (
     <LoadScriptWrapper>
       <div id='root'>
         <Router>
           <Header />
           <Routes>
-            <Route 
-            exact 
-            path='/'
-            element={isAuthenticated ? <GoogleMaps /> : <img src={placeholderImage} alt="Map Placeholder" />} />
+            <Route
+              exact
+              path='/'
+              element={
+                isAuthenticated ? (
+                  <GoogleMaps />
+                ) : (
+                  <img src={placeholderImage} alt='Map Placeholder' />
+                )
+              }
+            />
             <Route
               exact
               path='/lost'
@@ -70,5 +74,4 @@ function App() {
     </LoadScriptWrapper>
   );
 }
-
 export default withAuth0(App);
