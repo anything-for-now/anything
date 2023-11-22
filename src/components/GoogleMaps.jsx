@@ -66,9 +66,6 @@ const GoogleMaps = () => {
 
   return (
     <>
-      <h1 className='app-header1'>
-        Lost Hub
-      </h1>
       <div className="map-container">
         <div className="map">
         <GoogleMap
