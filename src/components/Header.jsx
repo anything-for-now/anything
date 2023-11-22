@@ -13,11 +13,8 @@ const Header = () => {
         <Container fluid>
           <Navbar.Brand href='/' id='brand-name'>
             <img
-              // id='logo'
-              width='50'
-              height='30'
-              src='../../public/images/lost-hub-logo.png'
-              className='d-inline-block align-top'
+              id='logo'
+              src='/../../public/images/lost-hub-logo.png'
               alt='lost hub logo'
             />
           </Navbar.Brand>
