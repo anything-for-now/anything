@@ -26,7 +26,7 @@ To get the LostHub frontend up and running on your machine, follow these instruc
    - Update VITE_GOOGLE_MAPS_API_KEY in the `.env` file with Google Maps API Key.
    - Update VITE_AUTH_DOMAIN in the `.env` file with a Auth Domain from Auth0.
    - Update VITE_AUTH_CLIENT_ID in the `.env` file with Auth Client ID from Auth0.
-6. **Launch the Express Server**: Run `npm start` or `npm run dev`.
+6. **Launch the Express Server**: Run `npm run dev`.
 7. **Access the Application**: Open your web browser and go to the provided URL (typically `http://localhost:5137`).
 
 ## Domain Modeling
