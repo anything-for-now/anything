@@ -1,4 +1,4 @@
-# LostHub Server
+# LostHub App
 
 ![Lost Hub Logo](./assets/lost-hub-logo.png)
 
