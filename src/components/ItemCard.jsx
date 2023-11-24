@@ -73,6 +73,8 @@ function ItemCard({ id, type, itemName, description, location, image, notes }) {
     
   }, [dispatch]);
 
+  console.log('Props received by ItemCard:', notes);
+  
   const handleShowModal = () => {
     dispatch(showModal());
   };

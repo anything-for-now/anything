@@ -54,8 +54,9 @@ function FormModal({ formType }) {
         </Modal.Header>
         <Modal.Body>
           <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
-            <Form.Label>Item Name</Form.Label>
+            <Form.Label htmlFor="itemNameInput">Item Name</Form.Label>
             <Form.Control
+              data-testid="itemNameInput"
               type='text'
               placeholder='// Wallet'
               value={formData.itemName}
@@ -68,9 +69,10 @@ function FormModal({ formType }) {
           </Form.Group>
 
           <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
-            <Form.Label>Location</Form.Label>
+            <Form.Label htmlFor="locationInput">Location</Form.Label>
             <div className='d-flex'>
               <Form.Control
+                data-testid="locationInput"
                 type='text'
                 value={formData.location}
                 placeholder='123 Street, Seattle, WA 98101'
@@ -84,8 +86,9 @@ function FormModal({ formType }) {
           </Form.Group>
 
           <Form.Group controlId='description'>
-            <Form.Label>Description</Form.Label>
+            <Form.Label htmlFor="descriptionInput">Description</Form.Label>
             <Form.Control
+              data-testid="descriptionInput"
               as='textarea'
               rows={3}
               placeholder='Provide a detailed description of the item...'
