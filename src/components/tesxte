@@ -1,0 +1,157 @@
+import React from 'react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import ItemCard from './ItemCard';
+import { deleteItem, fetchData, showModal, hideModal, addNote, updateItem } from '../store/item';
+
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
+
+describe('ItemCard Component', () => {
+  let store;
+  let mockItem;
+  const initialState = {
+    item: {
+      showModal: false,
+      selectedFile: null,
+      items: [],
+      formData: {
+        itemName: '',
+        location: '',
+        description: '',
+        notes: [],
+      },
+    },
+    user: {
+      user: {
+        email: 'test@example.com', // Mock user email
+      },
+    },
+  };
+
+  beforeEach(() => {
+    mockItem = {
+      id: '1',
+      type: 'Lost',
+      itemName: 'Test Item',
+      description: 'Test description',
+      location: 'Test location',
+      image: 'test.jpg',
+      notes: [],
+    };
+    initialState.item.items = [mockItem]; // Add mock item to the items array
+    store = mockStore(initialState);
+
+    store.dispatch = vi.fn().mockImplementation((action) => {
+      if (action.type === addNote.fulfilled.type) {
+        const { itemId, user, text } = action.meta.arg;
+        const itemIndex = initialState.item.items.findIndex(item => item.id === itemId);
+        if (itemIndex !== -1) {
+          initialState.item.items[itemIndex].notes.push({ user, text });
+        }
+      }
+      return Promise.resolve();
+    });
+  });
+
+  it('renders item details', () => {
+    render(
+      <Provider store={store}>
+        <ItemCard {...mockItem} />
+      </Provider>
+    );
+
+    // Check if item details are rendered
+    expect(screen.getByText('Test Item')).toBeInTheDocument();
+    expect(screen.getByText('Test location')).toBeInTheDocument();
+    expect(screen.getByText('Test description')).toBeInTheDocument();
+  });
+
+  it('opens the edit form modal when "EDIT" button is clicked', () => {
+    render(
+      <Provider store={store}>
+        <ItemCard {...mockItem} />
+      </Provider>
+    );
+
+    // Find the "EDIT" button and click it
+    fireEvent.click(screen.getByText('EDIT'));
+
+    // Check if the edit form modal is opened
+    expect(screen.getByText('Edit Item Form')).toBeInTheDocument();
+  });
+
+  it('shows confirmation modal when "DELETE" button is clicked', () => {
+    render(
+      <Provider store={store}>
+        <ItemCard {...mockItem} />
+      </Provider>
+    );
+
+    // Find the "DELETE" button and click it
+    fireEvent.click(screen.getByText('DELETE'));
+
+    // Check if the confirmation modal is opened
+    expect(screen.getByText('Confirm Deletion')).toBeInTheDocument();
+  });
+
+  const mockAddNote = (noteDetails) => ({
+    type: addNote.fulfilled.type,
+    payload: noteDetails,
+    meta: {
+      arg: noteDetails,
+      requestId: 'request-id',
+      requestStatus: 'fulfilled',
+    },
+  });
+  
+  it('adds a note when "Add Notes" button is clicked', async () => {
+    // Render the ItemCard with the Provider and store
+    render(
+      <Provider store={store}>
+        <ItemCard {...mockItem} />
+      </Provider>
+    );
+  
+    // Click the "Add Notes" button to open the note modal
+    fireEvent.click(screen.getByText('Add Notes'));
+  
+    // Enter text in the note input field
+    fireEvent.change(screen.getByPlaceholderText('Enter your note here...'), {
+      target: { value: 'Test note' },
+    });
+  
+    // Click the "Submit Note" button
+    fireEvent.click(screen.getByText('Submit Note'));
+  
+    // Simulate the dispatch of the addNote action
+    const noteToAdd = { itemId: mockItem.id, user: 'test@example.com', text: 'Test note' };
+    store.dispatch(mockAddNote(noteToAdd));
+  
+    // Since the state update is asynchronous, we need to wait for the next tick
+    await new Promise(process.nextTick);
+  
+    // Re-render the component to reflect the new state
+    render(
+      <Provider store={store}>
+        <ItemCard {...mockItem} />
+      </Provider>
+    );
+  
+    // Open the "Alerts" dropdown
+    fireEvent.click(screen.getAllByText('Alerts')[0]);
+  
+    // Find the note text to confirm it's been added
+    const noteUserText = await screen.findByText('User: test@example.com');
+    const noteText = await screen.findByText('Text: Test note');
+  
+    // Assertions
+    expect(noteUserText).toBeInTheDocument();
+    expect(noteText).toBeInTheDocument();
+  });
+
+  
+});
